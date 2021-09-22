@@ -1,4 +1,4 @@
-# save-the-pandas-intpython
+# save-the-pandas-intpython :panda_face:
 ## Setting up the repository
 
 ### Step 1: Install Git
