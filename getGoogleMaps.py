@@ -1,6 +1,5 @@
 """
 File: getGoogleMaps.py
-Author: Jameson Carter
 
 Desc: This file accesses the Google Maps Nearby Search API for 
 key- AIzaSyC2yikJt6UgbHwuD9MuOvZliOFYdn34VbU. It outputs a pandas dataframe
@@ -39,10 +38,10 @@ import pandas as pd
 
 def getMapData(key, location, keyword, radius):
     params = {
-        'key':key,
-        'keyword':keyword,
-        'location':location,
-        'radius':radius
+        'key' : key,
+        'keyword' : keyword,
+        'location' : location,
+        'radius' : radius
         }
     url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
     
@@ -51,14 +50,7 @@ def getMapData(key, location, keyword, radius):
     df = pd.json_normalize(result['results'])
     return df
 
-# The below function call pulls results for the 'food bank' term
-# within 2000 meters of 5729 Holden Street
-'''
-nearHolden = getMapData('AIzaSyC2yikJt6UgbHwuD9MuOvZliOFYdn34VbU',
-           '40.454470,-79.931210',
-           'food bank',
-           '2000')
-'''
+
 
     
     
