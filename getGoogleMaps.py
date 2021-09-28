@@ -36,19 +36,29 @@ import json
 import requests
 import pandas as pd
 
-def getMapData(key, location, keyword, radius):
+def getMapData(key, location, keyword, radius, next_page_token = None):
     params = {
         'key' : key,
-        'keyword' : keyword,
         'location' : location,
-        'radius' : radius
+        'keyword' : keyword,
+        'radius' : radius,
+        'pagetoken' : next_page_token
         }
     url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
-    
+    # If there is no next page token provided, delete that key-value pair
+    if next_page_token is None:
+        del params['pagetoken']
+    # Call the Google API
     response = requests.get(url,params)
     result = json.loads(response.text)
     df = pd.json_normalize(result['results'])
-    return df
+    # Finally, return the next page token for the next page, if there is one
+    try:
+        next_page_tk = result['next_page_token']
+        return [df,next_page_tk]
+    except:
+        # Return the output data frame and the next page token in a list
+        return [df,None]
 
 
 
