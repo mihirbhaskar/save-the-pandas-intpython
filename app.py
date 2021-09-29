@@ -1,7 +1,7 @@
 """
 File: app.py
 Description: Contains the front-end of the Dash application
-Authors: Mihir Bhaskar, Anna (Qi)
+Author: Mihir Bhaskar
 
 Usage instructions:
     1. Install Dash and its components by opening 'Anaconda Prompt' and typing commands
@@ -11,8 +11,7 @@ Usage instructions:
 
 google_apikey = 'AIzaSyDitOkTVs4g0ibg_Yt04DQqLaUYlxZ1o30'
 
-import json
-import requests
+from getAddressCoords import getAddressCoords # program defined in this repo
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -53,28 +52,13 @@ app.layout = html.Div([
    [State('user-address', 'value')] 
 )
 def update_output_div(n_clicks, input_value):
-    url = ('https://maps.googleapis.com/maps/api/geocode/json?address=' 
-           + input_value + '&key=' + google_apikey)
-    response = requests.get(url)
-    
+    # First output value, before user has submitted anything - show blank
     if n_clicks == 0:
         return ''
     
+    # Return the output from the getAddressCoords function
     else:
-        # Need to check this bit of code
-        # Based on if response status code was successful, returns lat-long or says invalid address
-        if response.status_code == 200:
-            
-            result = json.loads(response.text)
-            
-            lat = result['results'][0]['geometry']['location']['lat']
-            long = result['results'][0]['geometry']['location']['lng']
-    
-            return 'Latitude: {:.2f}, Longitude: {:.2f}'.format(lat, long)   
-        
-        # Flagging if there was an error
-        else:
-            return "Invalid address"
+        return getAddressCoords(input_address = input_value, api_key = google_apikey)
     
 if __name__ == '__main__':
     app.run_server(debug=True, dev_tools_hot_reload=False)
