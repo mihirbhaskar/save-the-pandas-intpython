@@ -27,7 +27,7 @@ def getAddressCoords(input_address, api_key):
         lat = result['results'][0]['geometry']['location']['lat']
         long = result['results'][0]['geometry']['location']['lng']
 
-        return 'Latitude: {:.2f}, Longitude: {:.2f}'.format(lat, long)   
+        return (lat, long) 
     
     # Flagging if there was an error
     else:
