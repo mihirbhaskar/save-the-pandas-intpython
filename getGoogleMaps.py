@@ -52,6 +52,13 @@ def getMapData(key, location, keyword, radius, next_page_token = None):
     response = requests.get(url,params)
     result = json.loads(response.text)
     df = pd.json_normalize(result['results'])
+    # Separate the address from the city, first add commas to strings without
+    # them so that we can use str.split()
+    df = df[['geometry.location.lat','geometry.location.lng',
+            'vicinity','name','place_id','price_level']]
+    # Rename to make everything simpler
+    df = df.rename(columns={"geometry.location.lat": "latitude", 
+                       "geometry.location.lng": "longitude"})
     # Finally, return the next page token for the next page, if there is one
     try:
         next_page_tk = result['next_page_token']
