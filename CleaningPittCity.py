@@ -86,9 +86,9 @@ pittSites = pittSites.append(recCtr_only, ignore_index=True)
 pittSites = pittSites.astype( {"address_number" : "Int64", # convert each to number val 
                                      "zip" : "Int64"})
 
+pittSites = pittSites.astype( {"address_number" : "str"})
 # check each of the sites to see if they actually provide one of the following: 
 # food, housing, household goods, clothing, training and other services 
-
 
 # 0 - Hazelwood: food, training and other services
 # notes - YMCA food bank (first Sat of month), life skills programming for youth
@@ -182,12 +182,6 @@ pittSites = pittSites.astype( {"address_number" : "Int64", # convert each to num
     # 25, 22, 21, 20, 17, 15, 12, 4, 3, 2, 1
 
 
-# Add cols to pittSites
-pittSites["Tag1"] = ""
-pittSites["Tag2"] = ""
-pittSites["Notes"] = ""
-pittSites["Website"] = ""
-
 
 # drop the indices we don't want 
 new_pittSites = pittSites.copy()
@@ -197,6 +191,32 @@ new_pittSites.drop([25, 22, 21, 20,
 
 new_pittSites.reset_index(drop=True, inplace=True) # reset the index, get rid of old 
 
+
+# Add vicinity col so that matches API data 
+address1 = []
+for each in new_pittSites["address_number"]: 
+    address1.append(each)
+    
+address2 = []
+for each in new_pittSites["street"]: 
+    address2.append(each)
+    
+
+vicinity = [str(x + " " + y) for x, y in zip(address1, address2)] 
+
+# Add vicinity col to pittSites
+
+new_pittSites["Vicinity"] = vicinity
+
+
+# Add cols to pittSites
+new_pittSites["Tag1"] = ""
+new_pittSites["Tag2"] = ""
+new_pittSites["Tag3"] = ""
+new_pittSites["Tag4"] = ""
+new_pittSites["Tag5"] = ""
+new_pittSites["Notes"] = ""
+new_pittSites["Website"] = ""
 
 
 # create lists for Tag1 Data 
@@ -251,6 +271,10 @@ Websites = ["https://www.spartancenter.org/",
 new_pittSites["Website"] = Websites
 
 pittCity_final = new_pittSites.copy() 
-print(pittCity_final)
+pittCity_final.drop("type", axis=1, inplace=True) 
+pittCity_final.drop("zip", axis=1, inplace=True)
+pittCity_final.drop("street", axis=1, inplace=True)
+pittCity_final.drop("address_number", axis=1, inplace=True)
 
-pittCity_final.to_csv("pittCity_final.csv", index=False) 
+print(pittCity_final)
+pittCity_final.to_csv("pittCity_REALfinal.csv", index=False) 
