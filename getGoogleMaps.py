@@ -54,8 +54,8 @@ def getMapData(key, location, keyword, radius, next_page_token = None):
     df = pd.json_normalize(result['results'])
     # Separate the address from the city, first add commas to strings without
     # them so that we can use str.split()
-    df = df[['geometry.location.lat','geometry.location.lng',
-            'vicinity','name','place_id','price_level']]
+    df = df.loc[:,df.columns.isin(['geometry.location.lat','geometry.location.lng',
+            'vicinity','name','place_id','price_level',])]
     # Rename to make everything simpler
     df = df.rename(columns={"geometry.location.lat": "latitude", 
                        "geometry.location.lng": "longitude"})
