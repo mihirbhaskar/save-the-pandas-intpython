@@ -19,10 +19,10 @@ def filterNearby(point, data, max_dist = 5):
    ## data['place_coords'] = list(zip(data.latitude, data.longitude))
 
    # Applying the distance function to each row to create new column with distances
-   data['distance'] = data.apply(lambda x: distance(point, x['place_coords']).miles, axis=1)
+   data['distance in miles'] = data.apply(lambda x: distance(point, x['place_coords']).miles, axis=1)
    
    # Return data frame filtered with rows <= the maximum distance
-   return data[data['distance'] <= max_dist]
+   return data[data['distance in miles'] <= max_dist]
     
     
     

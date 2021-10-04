@@ -48,7 +48,7 @@ app = dash.Dash(__name__)
 df = pd.read_csv('MainFrame.csv', index_col=0)
 
 # Pulling column names from df to serve as options to populate the dropdown
-tags = df.columns[5:] # can specify this manually later to avoid errors from renumbering of columns
+tags = ['Clothing', 'Food', 'Household Goods', 'Housing', 'Training and other services']
 
 # =============================================================================
 # Layout section
@@ -83,8 +83,9 @@ app.layout = html.Div([
             )
         ]),
     
-    # Display appropriately filtered table
-    html.Div(id='output-table'),
+    # Display appropriately filtered and formatted table (# table is formatted in the callback section below)
+    # The style tag here centres the output
+    html.Div(id='output-table'), # style={'width':'80%', 'margin': '0 auto'}) - play with this code
     
     # Button to update data
     html.Button('Click to submit your own data', id='submit-data'),
@@ -103,7 +104,7 @@ app.layout = html.Div([
    Input('max-travel-dist', 'value'),
    Input('asset-type', 'value')
 )
-def update_output_div(n_clicks, user_address, max_travel_dist, asset_type):
+def search_output_div(n_clicks, user_address, max_travel_dist, asset_type):
     # First output value, before user has submitted anything - show blank
     if n_clicks == 0:
         return ''
@@ -115,7 +116,11 @@ def update_output_div(n_clicks, user_address, max_travel_dist, asset_type):
         # Check if address was translated properly - if yes, it should return a tuple
         if type(user_coords) == tuple:
             
-            # Filter the data frame with observations that fall within max distance limit
+            # =============================================================================
+            # Filtering the data according to parameters            
+            # =============================================================================
+            
+            # Filter the data frame with observations that fall within max distance limit, using a user-defined program
             fdata = filterNearby(point = user_coords, data = df, max_dist = max_travel_dist)
             
             # Now filter this data with only the categories the user selected
@@ -123,20 +128,53 @@ def update_output_div(n_clicks, user_address, max_travel_dist, asset_type):
             # First step: create a flag variable that takes 1 if any of the relevant categories have '1' 
             fdata['Keep'] = 0
             
+            # Asset_type is a list of categories that users have selected
             for i in asset_type:
                 fdata.loc[fdata[i] == 1, 'Keep'] = 1
                 
             # Keep the appropriate rows
             fdata = fdata[fdata['Keep'] == 1]
             
-            # Finally, select the appropriate columns to display
-            fdata.drop(['place_id', 'latitude', 'longitude', 'Keep', 'place_coords'], axis=1, inplace=True)
-                        
+            # =============================================================================
+            # Format the data for presenting it in the front-end table            
+            # =============================================================================
+            
+            # Combine the information in dummy columns to one column with comma-separated services provided
+            fdata['support provided'] = ''
+    
+            for i in tags: # Note: tags is defined at the top of the script, as the list of service categories
+                fdata.loc[fdata[i] == 1, 'support provided'] += i + ',' # Concat on the service name (column name) if it's value is 1
+            fdata['support provided'] = fdata['support provided'].str[:-1] # Strip the last comma 
+            
+            # Round the distance in miles column to 2 decimal places
+            fdata['distance in miles'] = fdata['distance in miles'].round(2)
+            
+            # Select the appropriate columns to display
+            fdata = fdata[['name', 'support provided', 'vicinity', 'distance in miles']]
+                                    
             # Convert the dataframe into Dash's DataTable for display in the app
             tmpdta = fdata.to_dict('rows')
             tmpcols = [{"name": i, "id": i,} for i in (fdata.columns)]
             
-            return dash_table.DataTable(data = tmpdta, columns = tmpcols)
+            # Return a well-formatted dash table
+            return dash_table.DataTable(data = tmpdta, columns = tmpcols,
+                                        fixed_rows={'headers': True},
+                                        fill_width=False,
+                                        
+                                        
+                                        # Need to play around with this code
+                                        # style_cell_conditional=[
+                                        #     {'if': {'column_id': 'name'},
+                                        #      'width':'40%'},
+                                        #     {'if': {'column_id': 'support provided'},
+                                        #      'width': '20%'},
+                                        #     {'if': {'column_id': 'vicinity'},
+                                        #      'width':'30%'},
+                                        #     {'if': {'column_id': 'distance in miles'},
+                                        #      'width': '10%'},
+                                        #     ],
+
+                                        style_data={'height': 'auto'})
             
         # If address failed, return the string error message
         else:
