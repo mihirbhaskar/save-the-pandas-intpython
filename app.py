@@ -45,10 +45,10 @@ app = dash.Dash(__name__)
 # Reading data
 # =============================================================================
 
-df = pd.read_csv('pittCity_final.csv')
+df = pd.read_csv('MainFrame.csv', index_col=0)
 
-tags = df['Tag1'].unique() # Pulling tags from the database to populate the dropdown
-
+# Pulling column names from df to serve as options to populate the dropdown
+tags = df.columns[5:] # can specify this manually later to avoid errors from renumbering of columns
 
 # =============================================================================
 # Layout section
@@ -116,17 +116,25 @@ def update_output_div(n_clicks, user_address, max_travel_dist, asset_type):
         if type(user_coords) == tuple:
             
             # Filter the data frame with observations that fall within max distance limit
-            filtered_data = filterNearby(point = user_coords, data = df, max_dist = max_travel_dist)
+            fdata = filterNearby(point = user_coords, data = df, max_dist = max_travel_dist)
             
             # Now filter this data with only the categories the user selected
-            filtered_data = filtered_data[filtered_data['Tag1'].isin(asset_type)]
+            
+            # First step: create a flag variable that takes 1 if any of the relevant categories have '1' 
+            fdata['Keep'] = 0
+            
+            for i in asset_type:
+                fdata.loc[fdata[i] == 1, 'Keep'] = 1
+                
+            # Keep the appropriate rows
+            fdata = fdata[fdata['Keep'] == 1]
             
             # Finally, select the appropriate columns to display
-            filtered_data = filtered_data[['name', 'street', 'zip', 'distance', 'type', 'Tag1', 'Tag2', 'Notes', 'Website']]
-            
+            fdata.drop(['place_id', 'latitude', 'longitude', 'Keep', 'place_coords'], axis=1, inplace=True)
+                        
             # Convert the dataframe into Dash's DataTable for display in the app
-            tmpdta = filtered_data.to_dict('rows')
-            tmpcols = [{"name": i, "id": i,} for i in (filtered_data.columns)]
+            tmpdta = fdata.to_dict('rows')
+            tmpcols = [{"name": i, "id": i,} for i in (fdata.columns)]
             
             return dash_table.DataTable(data = tmpdta, columns = tmpcols)
             
@@ -218,11 +226,6 @@ def data_entry_div(n_clicks):
         Button(root,text='Exit',width=10,command=root.quit).grid(row=3,column=4,sticky=E,padx=10,pady=5)
         
         root.mainloop()
-        
-        # Re-load the dataset in the app
-        df = pd.read_csv('pittCity_final.csv')
-
-        tags = df['Tag1'].unique() # Pulling tags from the database to populate the dropdown
 
         return "Data entry successfull"
     
