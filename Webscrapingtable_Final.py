@@ -97,15 +97,15 @@ foodsites["lat"] = lat
 foodsites["long"] = long 
 
 # all of these sites are food; add the tag in: 
-tag1 = list("Food" for x in (range(7)))  
+foodTag = list(1 for x in (range(7)))
 
 
 # add the tag cols in for all possible cols (only food)
-foodsites["Tag1"] = tag1 
-foodsites["Tag2"] = ""
-foodsites["Tag3"] = ""
-foodsites["Tag4"] = ""
-foodsites["Tag5"] = ""
+foodsites["Clothing"] = ""
+foodsites["Food"] = foodTag
+foodsites["Household"] = ""
+foodsites["Housing"] = ""
+foodsites["Training and other services"] = ""
 
 print(foodsites)
 

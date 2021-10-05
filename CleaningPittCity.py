@@ -1,7 +1,7 @@
 import pandas as pd 
 
 # import the pittCity data 
-pittCity = pd.read_excel('C:/Users/smail/Desktop/Pitt City Facilities_copy.xlsx', index_col=0)
+pittCity = pd.read_excel('Pitt City Facilities_copy.xlsx', index_col=0)
 pd.set_option('display.max_columns', None)  # so that can see whole table 
 
 # for row in pittCity: 

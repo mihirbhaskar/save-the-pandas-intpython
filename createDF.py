@@ -65,7 +65,7 @@ for keyword in keywords[1:]:
     
     # Tick up the index for 'categories' to get the category for the next keyword.        
     catIndex += 1
-            
+
    
 # Retain Pittsburgh addresses
 MainFrame = MainFrame[MainFrame['vicinity'].str.contains('Pittsburgh')]
@@ -82,6 +82,10 @@ MainFrame = MainFrame.pivot_table(
          columns='category', 
          values='Value').reset_index()
 MainFrame.index.name = MainFrame.columns.name = None
+# Add 'Notes' to make compatible with other data.
+# 'URL' column will be added using Google Maps API "Place Details" in a separate file.
+# That file will also drop 'place_id' for union compatibility.
+MainFrame['Notes']=''
 
 # Write to CSV
 MainFrame.to_csv('MainFrame.csv')
