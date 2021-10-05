@@ -28,6 +28,7 @@ from getAddressCoords import getAddressCoords
 from filterNearby import filterNearby
 
 # Other libraries
+import os
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -45,7 +46,11 @@ app = dash.Dash(__name__)
 # Reading data
 # =============================================================================
 
-df = pd.read_csv('MainFrame.csv', index_col=0)
+path = 'MainFrame.csv'
+
+df = pd.read_csv(path, index_col=0)
+# This gets the time of the most recent content modification -> when the data is first loaded into the app
+lastmt = os.stat(path).st_mtime
 
 # Pulling column names from df to serve as options to populate the dropdown
 tags = ['Clothing', 'Food', 'Household Goods', 'Housing', 'Training and other services']
@@ -83,9 +88,15 @@ app.layout = html.Div([
             )
         ]),
     
+    # Interval with which to update dataset
+    dcc.Interval(id='data-update-interval', interval=1000, n_intervals=0),
+    html.P(id='placeholder'),
+    
     # Display appropriately filtered and formatted table (# table is formatted in the callback section below)
     # The style tag here centres the output
     html.Div(id='output-table'), # style={'width':'80%', 'margin': '0 auto'}) - play with this code
+    
+   
     
     # Button to update data
     html.Button('Click to submit your own data', id='submit-data'),
@@ -94,7 +105,27 @@ app.layout = html.Div([
     ])
 
 # =============================================================================
-# Callback for the main user search and filtering section
+# Callback for the dataset to be updated when the .csv is modified (by data entry)
+# =============================================================================
+
+# Data update callback
+@app.callback(Output('placeholder', 'children'), 
+              [Input('data-update-interval', 'n_intervals')]
+)
+def dataset_update_trigger(n):
+    
+    # Reading in the data fresh if there was an update, and update last modified time
+    global lastmt # lastmt and df have to be defined as global variables in order to hold outside of this function
+                  # and be relevant for the next callback, which filters/uses the dataset
+    global df
+    if os.stat(path).st_mtime > lastmt:
+        lastmt = os.stat(path).st_mtime
+        df = pd.read_csv(path)
+        return ""
+    return ""
+
+# =============================================================================
+# Callback for the filtered set of results to be created and displayed
 # =============================================================================
 
 @app.callback(
@@ -102,7 +133,7 @@ app.layout = html.Div([
    [Input('submit-user-address', 'n_clicks')],
    [State('user-address', 'value')],
    Input('max-travel-dist', 'value'),
-   Input('asset-type', 'value')
+   Input('asset-type', 'value'),
 )
 def search_output_div(n_clicks, user_address, max_travel_dist, asset_type):
     # First output value, before user has submitted anything - show blank
@@ -115,7 +146,7 @@ def search_output_div(n_clicks, user_address, max_travel_dist, asset_type):
         
         # Check if address was translated properly - if yes, it should return a tuple
         if type(user_coords) == tuple:
-            
+    
             # =============================================================================
             # Filtering the data according to parameters            
             # =============================================================================
@@ -182,7 +213,7 @@ def search_output_div(n_clicks, user_address, max_travel_dist, asset_type):
         
 
 # =============================================================================
-# Callback for the data entry section
+# Callback for the data entry/input section
 # =============================================================================
 @app.callback(
     Output(component_id='output-container-button', component_property='children'),
