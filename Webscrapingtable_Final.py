@@ -76,6 +76,8 @@ def getAddressCoords(input_address, api_key):
 
 
 # get coords using API key and function defined above 
+# ENTER YOUR API KEY for google maps geocoding as the 
+# SECOND INPUT to the getAddressCoords function below 
 coords = []
 for each in foodsites["Vicinity"]: 
     coord = getAddressCoords(each, "Enter your API key here")  
