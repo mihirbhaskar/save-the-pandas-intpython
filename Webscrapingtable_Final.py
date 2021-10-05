@@ -67,8 +67,9 @@ def getAddressCoords(input_address, api_key):
                 
         lat = result['results'][0]['geometry']['location']['lat']
         long = result['results'][0]['geometry']['location']['lng']
+        place_id = result['results'][0]['place_id']
 
-        return (lat, long) 
+        return [(lat, long), place_id]
     
     # Flagging if there was an error
     else:
@@ -78,18 +79,21 @@ def getAddressCoords(input_address, api_key):
 # get coords using API key and function defined above 
 coords = []
 for each in foodsites["Vicinity"]: 
-    coord = getAddressCoords(each, "Enter your API key here")  
+    coord = getAddressCoords(each, "Enter API Key")  
     coords.append(coord)
   
     
 # save each item of each tuple into lat and long lists
 lat = []
 long = []
+place_ids = []
 for each in coords: 
-    lat1 = each[0]
+    lat1 = each[0][0]
     lat.append(lat1)
-    long1 = each[1]
+    long1 = each[0][1]
     long.append(long1)
+    place_id = each[1]
+    place_ids.append(place_id)
     
 
 # add lat and long cols to dF
@@ -101,13 +105,13 @@ foodTag = list(1 for x in (range(7)))
 
 
 # add the tag cols in for all possible cols (only food)
-foodsites["Clothing"] = ""
+foodsites["Clothing"] = 0
 foodsites["Food"] = foodTag
-foodsites["Household"] = ""
-foodsites["Housing"] = ""
-foodsites["Training and other services"] = ""
-
-print(foodsites)
+foodsites["Household"] = 0
+foodsites["Housing"] = 0
+foodsites["Training and other services"] = 0
+foodsites['Notes']=''
+foodsites['place_id'] = place_ids
 
 # output this to CSV to collate w/ CSVs containing other site data: 
 foodsites.to_csv("FoodSites_tableScrape.csv", index=False)
