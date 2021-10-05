@@ -1,4 +1,8 @@
 # save-the-pandas-intpython :panda_face:
+
+## App user notes
+- Once a row has been added to the CSV, the user just needs to click 'submit' again on the address for it to reflect
+
 ## Setting up the repository
 
 ### Step 1: Install Git
