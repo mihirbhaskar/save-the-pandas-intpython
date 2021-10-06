@@ -1,6 +1,6 @@
 """
 File: app.py
-Description: Contains the front-end of the Dash application
+Description: Main file for the front-end of the Dash application
 Author: Mihir Bhaskar
 
 Usage instructions:
@@ -166,6 +166,7 @@ def search_output_div(n_clicks, user_address, max_travel_dist, asset_type):
             # Keep the appropriate rows
             fdata = fdata[fdata['Keep'] == 1]
             
+    
             # =============================================================================
             # Format the data for presenting it in the front-end table            
             # =============================================================================
@@ -179,6 +180,11 @@ def search_output_div(n_clicks, user_address, max_travel_dist, asset_type):
             
             # Round the distance in miles column to 2 decimal places
             fdata['distance in miles'] = fdata['distance in miles'].round(2)
+            
+
+            # To-do: Make the vicinity a 'link' display that when users click gives them directions
+            # Link format to follow: https://www.google.com/maps/dir/?api=1&origin=760+West+Genesee+Street+Syracuse+NY+13204&destination=314+Avery+Avenue+Syracuse+NY+13204
+            # How to do it in code: https://github.com/plotly/dash-table/issues/222#issuecomment-585179610
             
             # Select the appropriate columns to display
             fdata = fdata[['name', 'support provided', 'vicinity', 'distance in miles']]
