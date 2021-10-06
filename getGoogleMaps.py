@@ -10,27 +10,12 @@ For more on nearby search see:
 https://developers.google.com/maps/documentation/places/web-service/search-nearby
 
 Output: A pandas dataframe holding information including-
-business_status
-icon
-icon_background_color
-icon_mask_base_uri
 name
 place_id
-rating
-reference
-scope
-types
-user_ratings_total
+price_level
 vicinity
 geometry.location.lat
 geometry.location.lng
-geometry.viewport.northeast.lat
-geometry.viewport.northeast.lng
-geometry.viewport.southwest.lat
-geometry.viewport.southwest.lng
-plus_code.compound_code
-plus_code.global_code
-opening_hours.open_now
 """
 import json
 import requests

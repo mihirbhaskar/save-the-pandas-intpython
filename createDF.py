@@ -15,7 +15,7 @@ Output: pandas dataframe MainFrame, written to .csv
 import getGoogleMaps as getGM
 import pandas as pd
 import time
-import getLocationWebsite
+import getLocationWebsite as getLW
 
 
 with open('Keywords.csv', 'r') as f:
@@ -86,17 +86,19 @@ MainFrame = MainFrame.pivot_table(
 MainFrame.index.name = MainFrame.columns.name = None
 # Add 'Notes' to make compatible with other data.
 MainFrame['Notes']=''
-# 'URL' column will be added using Google Maps API "Place Details" in a separate file.
-# That file will also drop 'place_id' for union compatibility.
 
-websites = []
-for i in MainFrame['place_id'][0:5]:
-    website = getLocationWebsite('KEY','ChIJff4dv1DxNIgRRrImDNjSHLE','website')
-    websites.append(website[1])
+# 'URL' column will be added using Google Maps API "Place Details"
+websites = {'place_id':[], 'website':[]}
+for i in MainFrame['place_id']:
+    result = getLW.getLocationWebsite('KEY',
+                                       i,'website')
     
-getLocationWebsite('KEY', 'ChIJff4dv1DxNIgRRrImDNjSHLE', "website")
-    
-print(websites)
+    if not result.empty:
+        websites['place_id'].append(i)
+        websites['website'].append(result.at[0,'website'])
+websitedf = pd.DataFrame.from_dict(websites)
+
+MainFrame = MainFrame.join(websitedf.set_index('place_id'), on='place_id')
 
 # Write to CSV
 MainFrame.to_csv('MainFrame.csv')
