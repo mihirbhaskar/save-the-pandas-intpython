@@ -1,13 +1,14 @@
-# File: function for cleaning Pitt City facilities CSV/Excel file
+""" File: function for cleaning Pitt City facilities CSV/Excel file
 
-# Description: Take the CSV of City of Pittsburgh facilities CSV/Excel file
-# from online. Clean this data, getting rid of sites that do not provide 
-# community service we are interested in. 
-# Generate a Pandas DataFrame that is exported to a final CSV, to be combined
-# with other CSV datas into the mainframe. 
+Description: Take the CSV of City of Pittsburgh facilities CSV/Excel file
+from online. Clean this data, getting rid of sites that do not provide 
+community service we are interested in. 
+Generate a Pandas DataFrame that is exported to a final CSV, to be combined
+with other CSV datas into the mainframe. 
  
- # Output: CSV file of community sites.    
-    
+Output: CSV file of community sites.    
+"""
+
 import pandas as pd 
 
 def cleanPitt(): 
@@ -15,50 +16,10 @@ def cleanPitt():
     pittCity = pd.read_excel("CSV to Clean - Pitt City Facils.xlsx", index_col=0)
     pd.set_option('display.max_columns', None)  # so that can see whole table 
     
-    # for row in pittCity: 
-    #    print(row) # gives us the col headings 
-    
-    # parcel_id
-    # inactive
-    # name
-    # rentable
-    # type  --> tells us the type of facil, whom it serves, etc
-    # primary_user
-    # address_number
-    # street
-    # zip
-    # image
-    # neighborhood  6 decimals, comma 
-    # council_district
-    # ward
-    # tract
-    # public_works_division
-    # pli_division
-    # police_zone
-    # fire_zone
-    # latitude  --> need 
-    # longitude  --> need 
-    
-    # from this, we need cols:  
-    # latitude, 
-    # longitude, 
-    # address_number,
-    #  street, 
-    # zip
-    # type 
-    
     # gives us the types of facilities 
     pittCity.type.unique()
     # print(type_facil) 
-    
-    # we get: 
-    # ['Storage' 'Shelter' 'Senior' 'Pool' 'Utility' 'Activity' 'Restrooms'
-    #  'Service' 'Concession' 'Dugout' 'Pool/Rec' 'Rec Center' 'Office'
-    #  'Pool Closed' 'Firehouse' 'Community' 'Vacant' 'Cabin' 'Medic Station'
-    #  'Training' 'Police' 'Salt Dome' 'Recycling' 'SERVICE' 'STORAGE' 'POLICE'
-    #  'TRAINING' 'OFFICE' nan]
-    # we have a NaN val - let's code that to Community to see if useful 
-    
+
     # things that will be useful for us: 
     # Senior 
     # Rec Center 
@@ -98,6 +59,8 @@ def cleanPitt():
                                          "zip" : "Int64"})
     
     pittSites = pittSites.astype( {"address_number" : "str"})
+    
+    """
     # check each of the sites to see if they actually provide one of the following: 
     # food, housing, household goods, clothing, training and other services 
     
@@ -191,7 +154,7 @@ def cleanPitt():
     
     # So, remove rows: 
         # 25, 22, 21, 20, 17, 15, 12, 4, 3, 2, 1
-    
+    """
     
     
     # drop the indices we don't want 
@@ -218,7 +181,6 @@ def cleanPitt():
     # Add vicinity col to pittSites
     
     new_pittSites["Vicinity"] = vicinity
-    
     
     # create lists for Tag Data 
     foodTag = [1 for x in range(12)]
