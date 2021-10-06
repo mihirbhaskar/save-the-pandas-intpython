@@ -15,6 +15,8 @@ Output: pandas dataframe MainFrame, written to .csv
 import getGoogleMaps as getGM
 import pandas as pd
 import time
+import getLocationWebsite
+
 
 with open('Keywords.csv', 'r') as f:
     keywords = []
@@ -28,7 +30,7 @@ MainFrame = pd.DataFrame()
 catIndex = 1
 for keyword in keywords[1:]:
     
-    results = getGM.getMapData('AIzaSyCjLXAhl8eQajfsKWIscyNk4Te1wnOdCNM',
+    results = getGM.getMapData('KEY',
                                '40.440600,-79.995900', keyword, '50000')
     data = results[0]
     data['category'] = categories[catIndex]
@@ -39,7 +41,7 @@ for keyword in keywords[1:]:
     # initial API call. So we check to see whether there is a nextToken for each
     if nextToken is not None:
         time.sleep(2) # Need to introduce this so that API call ready for token
-        results2 = getGM.getMapData('AIzaSyCjLXAhl8eQajfsKWIscyNk4Te1wnOdCNM',
+        results2 = getGM.getMapData('KEY',
                                '40.440600,-79.995900', keyword, '50000', 
                                nextToken)
         data2 = results2[0]
@@ -48,7 +50,7 @@ for keyword in keywords[1:]:
         
         if nextToken is not None:
             time.sleep(2)
-            results3 = getGM.getMapData('AIzaSyCjLXAhl8eQajfsKWIscyNk4Te1wnOdCNM',
+            results3 = getGM.getMapData('KEY',
                                '40.440600,-79.995900', keyword, '50000', 
                                nextToken)
             data3 = results3[0]
@@ -83,9 +85,18 @@ MainFrame = MainFrame.pivot_table(
          values='Value').reset_index()
 MainFrame.index.name = MainFrame.columns.name = None
 # Add 'Notes' to make compatible with other data.
+MainFrame['Notes']=''
 # 'URL' column will be added using Google Maps API "Place Details" in a separate file.
 # That file will also drop 'place_id' for union compatibility.
-MainFrame['Notes']=''
+
+websites = []
+for i in MainFrame['place_id'][0:5]:
+    website = getLocationWebsite('KEY','ChIJff4dv1DxNIgRRrImDNjSHLE','website')
+    websites.append(website[1])
+    
+getLocationWebsite('KEY', 'ChIJff4dv1DxNIgRRrImDNjSHLE', "website")
+    
+print(websites)
 
 # Write to CSV
 MainFrame.to_csv('MainFrame.csv')

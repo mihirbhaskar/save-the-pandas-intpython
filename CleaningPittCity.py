@@ -1,7 +1,7 @@
 import pandas as pd 
 
 # import the pittCity data 
-pittCity = pd.read_excel('Pitt City Facilities_copy.xlsx', index_col=0)
+pittCity = pd.read_csv('C:/Users/mmari/Downloads/pitt_facilities.csv', index_col=0)
 pd.set_option('display.max_columns', None)  # so that can see whole table 
 
 # for row in pittCity: 
@@ -209,29 +209,34 @@ vicinity = [str(x + " " + y) for x, y in zip(address1, address2)]
 new_pittSites["Vicinity"] = vicinity
 
 
+# create lists for Tag Data 
+foodTag = [1 for x in range(12)]
+foodTag.append(0)
+foodTag.append(1)
+foodTag.append(1)
+
+housingTag = [0 for x in range(12)]
+housingTag.append(1)
+housingTag.append(0)
+housingTag.append(0) 
+print(housingTag)
+
+trainingTag = [1]
+for i in range(14):
+    trainingTag.append(0)
+
+
 # Add cols to pittSites
-new_pittSites["Tag1"] = ""
-new_pittSites["Tag2"] = ""
-new_pittSites["Tag3"] = ""
-new_pittSites["Tag4"] = ""
-new_pittSites["Tag5"] = ""
+new_pittSites["Clothing"] = 0
+new_pittSites["Food"] = foodTag
+new_pittSites["Household"] = 0
+new_pittSites["Housing"] = housingTag
+new_pittSites["Training and other services"] = trainingTag
 new_pittSites["Notes"] = ""
 new_pittSites["Website"] = ""
 
 
-# create lists for Tag1 Data 
-Tag1 = ["Food", "Food", "Food", "Food", "Food",
-        "Food", "Food", "Food", "Food", "Food",
-        "Food", "Food", "Housing", "Food", "Food"] 
-
-new_pittSites["Tag1"] = Tag1 
-
-# Add in data for Tag2 
-Tag2 = ["Training and other services", "", "", "", 
-        "", "", "", "", "", "", "", "", "", "", ""]
-
-new_pittSites["Tag2"] = Tag2 
-
+print(new_pittSites)
 
 # Add in Notes data: 
 Notes = ["YMCA food bank (first Sat of month), life skills programming for youth",
