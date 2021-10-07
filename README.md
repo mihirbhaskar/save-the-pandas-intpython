@@ -3,6 +3,9 @@
 ## App user notes
 - Once a row has been added to the CSV, the user just needs to click 'submit' again on the address for it to reflect
 
+## Resources used
+- [Dash Clinical Analytics App](https://github.com/plotly/dash-sample-apps/blob/main/apps/dash-clinical-analytics/app.py) used as a template for styling; CSS style sheets copied, and similar UI design used
+
 ## Setting up the repository
 
 ### Step 1: Install Git
