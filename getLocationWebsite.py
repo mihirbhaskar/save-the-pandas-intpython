@@ -28,4 +28,4 @@ def getLocationWebsite(key, ID, fields):
     return df
 
 
-print(getLocationWebsite('AIzaSyC5S1GFZDB7rwVTQJ5w327Ev5wLilfdMgo', 'ChIJYYxQ-jbxNIgRaeemnZ2yhvk', 'website'))
+print(getLocationWebsite('KEY', 'ChIJff4dv1DxNIgRRrImDNjSHLE', 'website'))

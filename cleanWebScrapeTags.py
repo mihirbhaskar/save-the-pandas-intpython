@@ -4,29 +4,11 @@ Created on Thu Oct  7 18:15:49 2021
 
 Filename: cleanWebScrapeTags
 
-Author: Michaela Marincic (mmarinci)
-
-Desc: Take the data scraped from an afterschool food program and clean the columns
-to match the two other csv data files to prepare for merging.
-
-Output: A csv file with columns:
-Name
-Vicinity
-lat
-long
-Clothing
-Food
-Household
-Housing
-Training and other services
-Notes
-website
+@author: Michaela Marincic (mmarinci)
 """
 
-import pandas as 
-import requests
-import json
-import getLocationWebsite as getLW
+import pandas as pd
+from getLocationWebsite import getLocationWebsite as getLW
 
 oldScrape = pd.read_csv('FoodSites_tableScrape.csv')
 
@@ -43,8 +25,10 @@ for tag in tagNames:
         oldScrape[tag] = 0
 newScrape = oldScrape.copy()
 newScrape['Notes'] = ''
+newScrape['Website'] = ''
 
 
+newScrape.to_csv('FoodSites_FINAL.csv')
 
 
 import requests
@@ -71,26 +55,15 @@ def getAddressCoords(input_address, api_key):
         return "Invalid address"
     
 for address in newScrape['Vicinity']:
-    newScrape['place_id'] = getAddressCoords(address,'KEY')[1]
+    newScrape['place_id'] = getAddressCoords(address,'AIzaSyC5S1GFZDB7rwVTQJ5w327Ev5wLilfdMgo')[1]
 
-websites = {'place_id':[], 'website':[]}
-for i in newScrape['place_id']:
-   result = getLW.getLocationWebsite('KEY',
-                                     i,'website')
-   if not result.empty:
-       websites['place_id'].append(i)
-       websites['website'].append(result.at[0,'website'])
-   else:
-       websites['place_id'].append(i)
-       websites['website'].append('')       
+urlList = []
+for place in newScrape['place_id']:
+    urlList.append(getLW('AIzaSyC5S1GFZDB7rwVTQJ5w327Ev5wLilfdMgo',place,'website'))
 
-websitedf = pd.DataFrame.from_dict(websites)
-
-newScrape = newScrape.join(websitedf.set_index('place_id'), on='place_id')
-newScrape.drop(columns = 'place_id', inplace = True)
-
-
-newScrape.to_csv('FoodSites_FINAL.csv')
+print(urlList)
+newScrape['Website'] = urlList
+print(newScrape['Website'])
 
 
 
