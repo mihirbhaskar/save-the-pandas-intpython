@@ -32,7 +32,7 @@ def createGoogleDF(apiKey):
     catIndex = 1
     for keyword in keywords[1:]:
     
-        results = getGM.getMapData(apiKey,
+        results = getGM.getMapData('AIzaSyC5S1GFZDB7rwVTQJ5w327Ev5wLilfdMgo',
                                '40.440600,-79.995900', keyword, '50000')
         data = results[0]
         data['category'] = categories[catIndex]
@@ -43,7 +43,7 @@ def createGoogleDF(apiKey):
         # initial API call. So we check to see whether there is a nextToken for each
         if nextToken is not None:
             time.sleep(2) # Need to introduce this so that API call ready for token
-            results2 = getGM.getMapData(apiKey,
+            results2 = getGM.getMapData('AIzaSyC5S1GFZDB7rwVTQJ5w327Ev5wLilfdMgo',
                                '40.440600,-79.995900', keyword, '50000', 
                                nextToken)
             data2 = results2[0]
@@ -52,7 +52,7 @@ def createGoogleDF(apiKey):
         
             if nextToken is not None:
                 time.sleep(2)
-                results3 = getGM.getMapData(apiKey,
+                results3 = getGM.getMapData('AIzaSyC5S1GFZDB7rwVTQJ5w327Ev5wLilfdMgo',
                                '40.440600,-79.995900', keyword, '50000', 
                                nextToken)
                 data3 = results3[0]
@@ -92,7 +92,7 @@ def createGoogleDF(apiKey):
     # 'URL' column will be added using Google Maps API "Place Details"
     websites = {'place_id':[], 'website':[]}
     for i in MainFrame['place_id']:
-        result = getLW.getLocationWebsite(apiKey,
+        result = getLW.getLocationWebsite('AIzaSyC5S1GFZDB7rwVTQJ5w327Ev5wLilfdMgo',
                                        i,'website')
     
         if not result.empty:
@@ -101,6 +101,7 @@ def createGoogleDF(apiKey):
     websitedf = pd.DataFrame.from_dict(websites)
 
     MainFrame = MainFrame.join(websitedf.set_index('place_id'), on='place_id')
+    MainFrame.drop(columns = 'place_id', inplace = True)
 
     # Write to CSV
     MainFrame.to_csv('MainFrame.csv')
