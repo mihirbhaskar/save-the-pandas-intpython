@@ -195,8 +195,7 @@ def getPittDwnld():
     housingTag = [0 for x in range(12)]
     housingTag.append(1)
     housingTag.append(0)
-    housingTag.append(0) 
-    print(housingTag)
+    housingTag.append(0)
     
     trainingTag = [1]
     for i in range(14):
@@ -211,9 +210,6 @@ def getPittDwnld():
     new_pittSites["Training and other services"] = trainingTag
     new_pittSites["Notes"] = ""
     new_pittSites["Website"] = ""
-    
-    
-    print(new_pittSites)
     
     # Add in Notes data: 
     Notes = ["YMCA food bank (first Sat of month), life skills programming for youth",
@@ -258,5 +254,4 @@ def getPittDwnld():
     pittCity_final.drop("street", axis=1, inplace=True)
     pittCity_final.drop("address_number", axis=1, inplace=True)
     
-    print(pittCity_final)
     pittCity_final.to_csv("pittCity_REALfinal.csv", index=False) 
