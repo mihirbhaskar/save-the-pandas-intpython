@@ -1,12 +1,22 @@
-# Webscraping free after-school meals table 
+""" Webscraping free after-school meals table 
 
-# Description: Code to scrape the after-school feeding data from the website below
-# https://pittsburghpa.gov/citiparks/after-school-feeding-program
-# for additional sites to add to our searchable database. Leverage the 
-# lat/long function to match lat/longs for addresses. 
+    Description: Code to scrape the after-school feeding data from the website below
+    https://pittsburghpa.gov/citiparks/after-school-feeding-program
+    for additional sites to add to our searchable database. Leverage the 
+    lat/long function to match lat/longs for addresses. 
 
-# Final output: CSV w/ free meal sites, findFood(url) function 
-
+    Final output: CSV w/ free meal site
+    Additional output: findFood(url) function to scrape the site,
+                        cleanFood(sites) function to beautify the output
+                        and map tag terms, lat/longs, etc. to cleaned 
+                        dataset generated 
+                        
+    Note: The scraping code initially worked such that we were able to generate 
+    a CSV, which we read into our mainframe. After a few days, however, we began
+    receiving an error message alerting us that we had exceeded max retries for
+    this URL. Didn't pose an issue for our data collection purposes, as we'd 
+    already scraped the table. 
+"""
 
 #############################################################################
 
@@ -14,7 +24,7 @@ import requests
 from bs4 import BeautifulSoup 
 import pandas as pd 
 import json 
-
+import getAddressCoords # need this function to add lat, longs to site addresses
 
 # write a function to scrape the page 
 def findFood(url): 
@@ -35,86 +45,65 @@ def findFood(url):
 sites = findFood("https://pittsburghpa.gov/citiparks/after-school-feeding-program")
 
 
-# now, let's clean up the data to get rid of funky html formatting: 
-locs2 = []
-
-for each in sites: 
-    each = each.split("--")
-    locs2.append(each) 
-
-# now that we have the cleaned data, put in DataFrame: 
-foodsites = pd.DataFrame(locs2, 
-                         columns = ["Name", "Vicinity"])
-
-
-# the Paulson site is not currently operational
-# let's drop it; it's row 6 
-foodsites.drop(6, inplace=True) 
-
-foodsites.reset_index(drop=True, inplace=True) # reindex bc we dropped Paulson site
-
-
-# we need lat/long - copying function from mihir's code 
-def getAddressCoords(input_address, api_key):
-    url = ('https://maps.googleapis.com/maps/api/geocode/json?address=' 
-           + input_address + '&key=' + api_key)
+# write a function to clean up the text and nget rid of funky html formatting: 
+def cleanFood(sites): 
+    locs2 = []
+    for each in sites: 
+        each = each.split("--")
+        locs2.append(each) 
     
-    response = requests.get(url)
-    result = json.loads(response.text)
+    # now that we have the cleaned data, put in DataFrame: 
+    foodsites = pd.DataFrame(locs2, 
+                             columns = ["Name", "Vicinity"])
+
+    # the Paulson site is not currently operational
+    # let's drop it; it's row 6 
+    foodsites.drop(6, inplace=True) 
     
-    # Check these error codes again - there may be more
-    if result['status'] not in ['INVALID_REQUEST', 'ZERO_RESULTS']:
-                
-        lat = result['results'][0]['geometry']['location']['lat']
-        long = result['results'][0]['geometry']['location']['lng']
-        place_id = result['results'][0]['place_id']
-
-        return [(lat, long), place_id]
+    # reset the index so that no terms skipped 
+    foodsites.reset_index(drop=True, inplace=True) # reindex bc we dropped Paulson site
     
-    # Flagging if there was an error
-    else:
-        return "Invalid address"
-
-
-# get coords using API key and function defined above 
-# ENTER YOUR API KEY for google maps geocoding as the 
-# SECOND INPUT to the getAddressCoords function below 
-coords = []
-for each in foodsites["Vicinity"]: 
-    coord = getAddressCoords(each, "Enter API Key")  
-    coords.append(coord)
-  
     
-# save each item of each tuple into lat and long lists
-lat = []
-long = []
-place_ids = []
-for each in coords: 
-    lat1 = each[0][0]
-    lat.append(lat1)
-    long1 = each[0][1]
-    long.append(long1)
-    place_id = each[1]
-    place_ids.append(place_id)
+    # we need lat/long - use getAddressCords function form above
+    """ NOTE: call getAddressCoords to get lat, longs of each site
+       using API key and function defined above. 
+       You need to ENTER YOUR API KEY for google maps geocoding as the 
+       SECOND INPUT to the getAddressCoords function below 
     
-
-# add lat and long cols to dF
-foodsites["lat"] = lat 
-foodsites["long"] = long 
-
-# all of these sites are food; add the tag in: 
-foodTag = list(1 for x in (range(7)))
-
-
-# add the tag cols in for all possible cols (only food)
-foodsites["Clothing"] = 0
-foodsites["Food"] = foodTag
-foodsites["Household"] = 0
-foodsites["Housing"] = 0
-foodsites["Training and other services"] = 0
-foodsites['Notes']=''
-foodsites['place_id'] = place_ids
-
-# output this to CSV to collate w/ CSVs containing other site data: 
-foodsites.to_csv("FoodSites_tableScrape.csv", index=False)
+    """ 
+    coords = []
+    for each in foodsites["Vicinity"]: 
+        coord = getAddressCoords(each, "Enter API Key")  
+        coords.append(coord)
+        
+    # save each item of each tuple into lat and long lists
+    lat = []
+    long = []
+    place_ids = []
+    for each in coords: 
+        lat1 = each[0][0]
+        lat.append(lat1)
+        long1 = each[0][1]
+        long.append(long1)
+        place_id = each[1]
+        place_ids.append(place_id)
+        
+    # add lat and long cols to dF
+    foodsites["lat"] = lat 
+    foodsites["long"] = long 
+    
+    # all of these sites are food; add the tag in: 
+    foodTag = list(1 for x in (range(7)))
+    
+    # add the tag cols in for all possible cols (only food sites in this dataset) 
+    foodsites["Clothing"] = 0
+    foodsites["Food"] = foodTag
+    foodsites["Household"] = 0
+    foodsites["Housing"] = 0
+    foodsites["Training and other services"] = 0
+    foodsites['Notes']=''
+    foodsites['place_id'] = place_ids
+    
+    # output this to CSV to collate w/ CSVs containing other site data: 
+    foodsites.to_csv("FoodSites_tableScrape.csv", index=False)
 
