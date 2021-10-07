@@ -1,17 +1,21 @@
-""" File: function for cleaning Pitt City facilities CSV/Excel file
+""" 
+File: CleaningPittCity.py
 
-Description: Take the CSV of City of Pittsburgh facilities CSV/Excel file
+Desc: Take the CSV of City of Pittsburgh facilities CSV/Excel file
 from online. Clean this data, getting rid of sites that do not provide 
 community service we are interested in. 
 Generate a Pandas DataFrame that is exported to a final CSV, to be combined
 with other CSV datas into the mainframe. 
  
-Output: CSV file of community sites.    
+Input: CSV file obtained from city of Pittsburgh at 
+https://data.wprdc.org/dataset/city-of-pittsburgh-facilities/resource/fbb50b02-2879-47cd-abea-ae697ec05170
+
+Output: CSV file of community sites that.    
 """
 
 import pandas as pd 
 
-def cleanPitt(): 
+def getPittDwnld(): 
     # import the pittCity data from the CSV/Excel file on GitHub: 
     pittCity = pd.read_excel("CSV to Clean - Pitt City Facils.xlsx", index_col=0)
     pd.set_option('display.max_columns', None)  # so that can see whole table 

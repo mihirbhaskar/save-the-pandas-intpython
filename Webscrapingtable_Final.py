@@ -23,7 +23,6 @@
 import requests
 from bs4 import BeautifulSoup 
 import pandas as pd 
-import json 
 import getAddressCoords # need this function to add lat, longs to site addresses
 
 # write a function to scrape the page 
@@ -40,13 +39,11 @@ def findFood(url):
 
     return locs 
 
-
-# call the function on the after-school feeding site from CitiParks: 
-sites = findFood("https://pittsburghpa.gov/citiparks/after-school-feeding-program")
-
-
 # write a function to clean up the text and nget rid of funky html formatting: 
-def cleanFood(sites): 
+def scrapeFood(): 
+    # call the function on the after-school feeding site from CitiParks: 
+    sites = findFood("https://pittsburghpa.gov/citiparks/after-school-feeding-program")
+
     locs2 = []
     for each in sites: 
         each = each.split("--")

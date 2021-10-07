@@ -9,13 +9,18 @@ location.
 For more on nearby search see:
 https://developers.google.com/maps/documentation/places/web-service/search-nearby
 
-Output: A pandas dataframe holding information including-
+Input: A Google Places API Key, a location around which search is conducted,
+a keyword upon which search is conducted, radius of the nearby search, and
+optional next_page_token argument.
+Output: A 2 item list containing a pandas dataframe in the 0th position 
+holding information including-
 name
 place_id
 price_level
 vicinity
 geometry.location.lat
 geometry.location.lng
+And a token to capture the next results provided by the API, in the 1st position.
 """
 import json
 import requests
