@@ -41,6 +41,7 @@ import csv
 import tkinter.messagebox
 
 app = dash.Dash(__name__)
+app.title = 'Community Support Search'
 
 # =============================================================================
 # Reading data
@@ -56,53 +57,98 @@ lastmt = os.stat(path).st_mtime
 tags = ['Clothing', 'Food', 'Household Goods', 'Housing', 'Training and other services']
 
 # =============================================================================
-# Layout section
+# Defining functions to create the appropriate HTML Divs (i.e. sections of the UI)
 # =============================================================================
 
-app.layout = html.Div([
-    
-    # App title
-    html.H1('Community Support Search'),
-    
-    # Address entry, display geocoded lat-long
-    html.Div([
-        html.Label("Enter your current address:"),
-        dcc.Input(id='user-address', value='', type='text')
-        ]),
-    
-    html.Button('Submit', id='submit-user-address', n_clicks = 0),
-    
-    html.Div([
-        html.Label("Enter the maximum distance you want to travel, in miles:"),
-        dcc.Input(id='max-travel-dist', value=10, type='number')
-        ]),
-    
-    # Select relevant categories
-    html.Div([
-        html.Label("Select categories: "),
-        dcc.Dropdown(
+def description_card():
+    """
+    Returns
+    -------
+    A Div containing dashboard title & descriptions
+    """
+    return html.Div(
+        id="description-card",
+        children=[
+            html.H5("Community Support Search"),
+            html.H3("Find and contribute support options near you"),
+            html.Div(
+                id="intro",
+                children='''Use the search options below to find locations near you providing support, or
+                            let us know about an initiative we may have missed.''',
+                ),
+            ],
+        )
+
+def generate_control_card():
+    """
+
+    Returns
+    -------
+    A Div containing the user-defined options for searching and adding new info
+
+    """
+    return html.Div(
+        id="control-card",
+        children=[
+            # Entering address
+            html.P("Enter your address and click submit"),
+            dcc.Input(id='user-address', value='', type='text'),
+            html.Button('Submit', id='submit-user-address', n_clicks = 0),
+            html.Br(),
+            html.Br(),
+            # Entering distance
+            html.P("Enter your max travel distance in miles"),
+            dcc.Input(id='max-travel-dist', value=10, type='number'),
+            html.Br(),
+            html.Br(),
+            # Selecting categories
+            html.P("Select relevant categories"),
+            dcc.Dropdown(
             id='asset-type',
             options=[{'label': i, 'value': i} for i in tags],
             value=[i for i in tags],
             multi=True
-            )
-        ]),
+            ),
+            html.Br(),
+            # Button to update data
+            html.P("Know a place we don't? Click to add info"),
+            html.Button('Submit your own data', id='submit-data'),
+            html.Div(id='output-container-button'),
+            
+            # Interval with which data gets updated
+            dcc.Interval(id='data-update-interval', interval=1000, n_intervals=0),
+            html.P(id='placeholder')
+            
+            
+            ]
+        
+        )
     
-    # Interval with which to update dataset
-    dcc.Interval(id='data-update-interval', interval=1000, n_intervals=0),
-    html.P(id='placeholder'),
-    
-    # Display appropriately filtered and formatted table (# table is formatted in the callback section below)
-    # The style tag here centres the output
-    html.Div(id='output-table'), # style={'width':'80%', 'margin': '0 auto'}) - play with this code
-    
-   
-    
-    # Button to update data
-    html.Button('Click to submit your own data', id='submit-data'),
-    html.Div(id='output-container-button')
 
-    ])
+# =============================================================================
+# Defining layout of the app
+# =============================================================================
+
+app.layout = html.Div([
+    
+    # Left column
+    html.Div(id="left-column",
+             className="four columns",
+             children=[description_card(), generate_control_card()]
+        ),
+    
+    # Right column
+    html.Div(
+        id="right-column",
+        className="eight columns",
+        children=[
+            # Output table
+            html.Div(id='output-table'), 
+            ],
+        ),
+    ],
+)
+    
 
 # =============================================================================
 # Callback for the dataset to be updated when the .csv is modified (by data entry)
@@ -187,7 +233,7 @@ def search_output_div(n_clicks, user_address, max_travel_dist, asset_type):
             # How to do it in code: https://github.com/plotly/dash-table/issues/222#issuecomment-585179610
             
             # Select the appropriate columns to display
-            fdata = fdata[['name', 'support provided', 'vicinity', 'distance in miles']]
+            fdata = fdata[['name', 'support provided', 'vicinity', 'distance in miles', 'website', 'Notes']]
                                     
             # Convert the dataframe into Dash's DataTable for display in the app
             tmpdta = fdata.to_dict('rows')
@@ -196,13 +242,11 @@ def search_output_div(n_clicks, user_address, max_travel_dist, asset_type):
             # Return a well-formatted dash table
             return dash_table.DataTable(data = tmpdta, columns = tmpcols,
                                         fixed_rows={'headers': True},
-                                        fill_width=False,
-                                        
-                                        
+                                        #fill_width=False,
                                         # Need to play around with this code
-                                        # style_cell_conditional=[
-                                        #     {'if': {'column_id': 'name'},
-                                        #      'width':'40%'},
+                                         style_cell_conditional=[
+                                             {'if': {'column_id': 'distance in miles'},
+                                              'width':'80px'}],
                                         #     {'if': {'column_id': 'support provided'},
                                         #      'width': '20%'},
                                         #     {'if': {'column_id': 'vicinity'},
@@ -210,8 +254,15 @@ def search_output_div(n_clicks, user_address, max_travel_dist, asset_type):
                                         #     {'if': {'column_id': 'distance in miles'},
                                         #      'width': '10%'},
                                         #     ],
-
-                                        style_data={'height': 'auto'})
+                                        style_data={'whiteSpace':'normal',
+                                                    'height': 'auto',
+                                                    'lineHeight':'15px'},
+                                        style_cell={'textAlign': 'left',
+                                                    'height': 'auto',
+                                                    'minWidth': '80px',
+                                                    'width': '180px',
+                                                    'maxWidth': '180px',
+                                                    'whiteSpace': 'normal'})
             
         # If address failed, return the string error message
         else:
@@ -302,7 +353,7 @@ def data_entry_div(n_clicks):
         
         root.mainloop()
 
-        return "Data entry successfull"
+        return "Data entry successful"
     
 if __name__ == '__main__':
     app.run_server(debug=True, dev_tools_hot_reload=True)
