@@ -35,10 +35,14 @@ import dash_html_components as html
 import dash_table
 from dash.dependencies import Input, Output, State
 import pandas as pd
+import tkinter
 from tkinter import *
+from tkinter import ttk
 from numpy import longcomplex
 import csv
 import tkinter.messagebox
+import json
+import requests
 
 app = dash.Dash(__name__)
 app.title = 'Community Support Search'
@@ -279,81 +283,111 @@ def search_output_div(n_clicks, user_address, max_travel_dist, asset_type):
 def data_entry_div(n_clicks):
     
     if n_clicks is not None:
-
+    
         root=Tk()
         root.title('Upload UI')  #title
         #root.geometry('500x300') window大小
         
         Label(root,text='Name:').grid(row=0,column=0)
-        Label(root,text='Type:').grid(row=0,column=2)
-        Label(root,text='Tag1:').grid(row=0,column=4)
-        Label(root,text='Tag2:').grid(row=0,column=6)
-        Label(root,text='Latitute:').grid(row=1,column=0)
-        Label(root,text='Longitude:').grid(row=1,column=2)
-        Label(root,text='Address Number:').grid(row=1,column=4)
-        Label(root,text='Street:').grid(row=1,column=6)
-        Label(root,text='Zipcode:').grid(row=2,column=0)
+        Label(root,text='Vicinity:').grid(row=0,column=2)
+        Label(root,text='Category:').grid(row=1,column=0)
+        Label(root,text='Notes:').grid(row=2,column=0)
         Label(root,text='Website:').grid(row=2,column=2)
-        Label(root,text='Note:').grid(row=2,column=4)
         
         e1=Entry(root)
         e1.grid(row=0,column=1,padx=7,pady=5) #name
-        e2=Entry(root)
-        e2.grid(row=0,column=3,padx=7,pady=5) #type
-        e3=Entry(root)
-        e3.grid(row=0,column=5,padx=7,pady=5) #tag1
+        #comvalue=tkinter.StringVar()
+        #e3=ttk.Combobox(root,textvariable=comvalue) #Category
+        #e3.grid(row=0,column=5,padx=7,pady=5) #Place ID
+        #e3['value']=('Clothing','Food','Household Goods','Housing','Training and other services')
+        #e3.current(1)  #default setting->Food
+        category = {0:'Clothing',1:'Food',2:'Household Goods',3:'Housing',4:'Training and other services'}
+        dic1 = {}
+        for i in range(len(category)):
+            dic1[i] = BooleanVar()
+            Checkbutton(root,text=category[i],variable=dic1[i]).grid(row=1,column=i+1)
         e4=Entry(root)
-        e4.grid(row=0,column=7,padx=7,pady=5) #tag2
+        e4.grid(row=2,column=1,padx=7,pady=5)#Notes
         e5=Entry(root)
-        e5.grid(row=2,column=1,padx=7,pady=5) #zipcode
+        e5.grid(row=2,column=3,padx=7,pady=5)#Website   
         e6=Entry(root)
-        e6.grid(row=2,column=3,padx=10,pady=5)#website
+        e6.grid(row=0,column=3,padx=7,pady=5)#Vicinity
         e7=Entry(root)
-        e7.grid(row=1,column=1,padx=7,pady=5) #latitute
-        e8=Entry(root)
-        e8.grid(row=1,column=3,padx=7,pady=5) #longtitude
-        e9=Entry(root)
-        e9.grid(row=1,column=5,padx=7,pady=5) #adds num
-        e10=Entry(root)
-        e10.grid(row=1,column=7,padx=7,pady=5)#street
-        e11=Entry(root)
-        e11.grid(row=2,column=5,padx=7,pady=5)#note
+        
+        def required(): #name,vicinity
+            r1=e1.get()
+            r2=e6.get()
+            flag=1
+            if len(r1)==0:
+                tkinter.messagebox.showwarning('Warning','Please enter the name!')
+                flag=0
+            if len(r2)==0:
+                tkinter.messagebox.showwarning('Warning','Please enter the Vicinity!')
+                flag=0
+            if getAddressCoords(e6.get(), google_apikey) == 'Invalid address':
+                tkinter.messagebox.showwarning('Warning','Please enter a valid address!')
+                flag=0
+            return flag
+        
+        def mutichoice():
+            cats=[]
+            for key,value in dic1.items():
+                if value.get() == True:
+                    cats.append(category[key])
+            numb=len(cats)
+            return cats,numb
         
         def yes_or_no():
-            a=tkinter.messagebox.askokcancel('Upload data','Do you want upload this data?')
-            if a:
-                upload_val()
+            flag=required()
+            if flag:
+                a=tkinter.messagebox.askokcancel('Upload data','Do you want upload this data?')
+                if a:
+                    upload_val()
+        #**************************            
         
         def upload_val():
             name=e1.get()
-            type=e2.get()
-            tag1=e3.get()
-            tag2=e4.get()
-            zip=e5.get()
-            website=e6.get()
-            lat=e7.get()
-            long=e8.get()
-            adds=e9.get()
-            street=e10.get()
-            note=e11.get()
+            notes=e4.get()
+            website=e5.get()
+            cat,numb=mutichoice()
+            flag1=e7.get()
+            flag2=e7.get()
+            flag3=e7.get()
+            flag4=e7.get()
+            flag5=e7.get()
+            for i in range(numb):
+                if cat[i]=='Clothing':
+                    flag1=1
+                elif cat[i]=='Food':
+                    flag2=1
+                elif cat[i]=='Household Goods':
+                    flag3=1
+                elif cat[i]=='Housing':
+                    flag4=1
+                elif cat[i]=='Training and other services':
+                    flag5=1
+            #flag1,flag2,flag3,flag4,flag5=fill(flag1,flag2,flag3,flag4,flag5)
+            lat= list(getAddressCoords(e6.get(), google_apikey))[0]
+            long=list(getAddressCoords(e6.get(), google_apikey))[1]
+            vin=e6.get()
         
             # write into file
-            #df=pd.DataFrame({'name':str(name),'type':str(type),'tag1':str(tag1),'tag2':str(tag2),'zipcode':str(zip),'website':str(website),'latitute':str(lat),
-            #'longtitute':str(long),'address_number':str(adds),'street':str(street),'note':str(note)})
-            #df.to_csv('pittCity_final.csv',mode='a')
-            place=[name,lat,long,adds,street,zip,type,tag1,tag2,note,website]
-            with open('pittCity_final.csv','a') as file:
+            with open('MainFrame.csv','r', encoding="utf8") as file:
+                count=len(file.readlines())-1
+            placeall=[count,name,place,lat,long,vin,flag1,flag2,flag3,flag4,flag5,notes,website]
+            with open('MainFrame.csv','a', encoding="utf8") as file:       
                 writer=csv.writer(file)
-                writer.writerow(place)
+                writer.writerow(placeall)
         
             b=tkinter.messagebox.showinfo('Result','Uploaded Successfully')
         
         Button(root,text='Upload',width=10,command=yes_or_no).grid(row=3,column=0,sticky=E,padx=10,pady=5)
-        Button(root,text='Exit',width=10,command=root.quit).grid(row=3,column=4,sticky=E,padx=10,pady=5)
+        Button(root,text='Exit',width=10,command=root.quit).grid(row=3,column=3,sticky=E,padx=10,pady=5)
         
         root.mainloop()
-
-        return "Data entry successful"
+        
+        return "Data updated successfully"
+    
     
 if __name__ == '__main__':
     app.run_server(debug=True, dev_tools_hot_reload=True)
