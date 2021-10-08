@@ -1,4 +1,4 @@
-,name,latitude,longitude,vicinity,Clothing,Food,Household Goods,Housing,Training and other services,Notes,website
+,NAME,LATITUDE,LONGITUDE,VICINITY,CLOTHING,FOOD,HOUSEHOLD GOODS,HOUSING,TRAINING AND OTHER SERVICES,NOTES,WEBSITE
 0,412 Food Rescue,40.462826,-79.92193739999999,"6140 Station St, Pittsburgh",,1.0,,,,,http://www.412foodrescue.org/
 1,5480 Black St,40.4694647,-79.93004789999999,"Black St #5480, Pittsburgh",,1.0,,,,,https://www.jamesstsensory.org/
 2,A Childs Wardrobe and adults too!,40.4322063,-79.9232648,"2200 Murray Ave, Pittsburgh",1.0,,,,,,http://www.achildswardrobe.com/
@@ -441,3 +441,25 @@
 439,"Youth Advocate Programs, Inc",40.4301129,-79.9966195,"26 Terminal Way, Pittsburgh",,,,1.0,,,https://www.yapinc.org/
 440,YouthPlaces,40.452716,-80.008078,"711 W Commons, Pittsburgh",,,,1.0,,,http://youthplaces.org/
 441,Zicknacks Community Thrift Store,40.37824579999999,-79.9902455,"2780 Saw Mill Run Blvd, Pittsburgh",1.0,,,,,,http://www.zicknacks.com/
+442,Hazelwood Community Center,40.40646699,-79.94265677,138 JOHNSTON AVE,0.0,1.0,0.0,0.0,1.0,"YMCA food bank (first Sat of month), life skills programming for youth",https://www.spartancenter.org/
+443,Beechview Senior and Community Center,40.41073294,-80.0243594,1555 BROADWAY AVE,0.0,1.0,0.0,0.0,0.0,"free grab&go senior lunches, M, W, F from 11-1, healthy active living ctr for seniors",
+444,Brighton Heights Senior Center,40.47926492,-80.03582778,3515 MCCLURE AVE,0.0,1.0,0.0,0.0,0.0,"free grab&go senior lunches, M, W, F from 11-1, healthy active living ctr for seniors",
+445,Glen Hazel Senior Center,40.40673455,-79.93310816,945 ROSSELLE CT,0.0,1.0,0.0,0.0,0.0,"free grab&go senior lunches, M, W, F from 11-1; healthy active living ctr for seniors",
+446,Hazelwood Senior Center,40.40366317,-79.94257411,5344 SECOND AVE,0.0,1.0,0.0,0.0,0.0,"free grab&go senior lunches, M, W, F from 11-1; healthy active living ctr for seniors",
+447,Homewood Senior Center,40.45691848,-79.89299637,7321 FRANKSTOWN AVE,0.0,1.0,0.0,0.0,0.0,"free grab&go senior lunches, M, W, F from 11-1; healthy active living ctr for seniors",
+448,Lawrenceville Senior Center,40.47312147,-79.95808507,4600 BUTLER ST,0.0,1.0,0.0,0.0,0.0,"free grab&go senior lunches, M, W, F from 11-1; healthy active living ctr for seniors",
+449,Magee Recreation Center,40.42439382,-79.93676526,745 GREENFIELD AVE,0.0,1.0,0.0,0.0,0.0,"after-school meals, 4-6pm (snack & dinner)",https://apps.pittsburghpa.gov/redtail/images/15894_MageePAGE.pdf
+450,Morningside Senior Center,40.4838976,-79.92498053,6944 PRESIDENT WAY,0.0,1.0,0.0,0.0,0.0,"free grab&go senior lunches, M, W, F from 11-1; healthy active living ctr for seniors",
+451,Mount Washington Senior Center,40.43005473,-80.0079767,122 VIRGINIA AVE,0.0,1.0,0.0,0.0,0.0,"free grab&go senior lunches, M, W, F from 11-1; healthy active living ctr for seniors",
+452,Sheraden Senior Center,40.45518068,-80.05670087,720 SHERWOOD AVE,0.0,1.0,0.0,0.0,0.0,"free grab&go senior lunches, M, W, F from 11-1; healthy active living ctr for seniors",
+453,West End Senior Center,40.43887353,-80.03471426,60 WABASH ST,0.0,1.0,0.0,0.0,0.0,"free grab&go senior lunches, M, W, F from 11-1; healthy active living ctr for seniors",
+454,Morningside Crossing,40.4861716,-79.92595239,1802 JANCEY ST,0.0,0.0,0.0,1.0,0.0,"46-unit mixed housing redevelopment, focus on seniors, most units for people making 20 - 60% median income",https://cmshousing.com/properties/morningside-crossing/
+455,Jefferson Recreation Center,40.4593693,-80.01450519,605 REDKNAP ST,0.0,1.0,0.0,0.0,0.0,"free after-school meals for kids, 4-6pm",
+456,Paulson Recreation Center,40.46823802,-79.90351256,1201 PAULSON AVE,0.0,1.0,0.0,0.0,0.0,"free after-school meals for kids, 4-6pm",https://www.afterschoolpgh.org/programs/paulson-community-recreation-center/
+457,AMMON,40.6497151,-73.9555525,2217 Bedford Avenue,0.0,1.0,0.0,0.0,0.0,,
+458,ARLINGTON,40.4192698,-79.9753614,2201 Salisbury Street,0.0,1.0,0.0,0.0,0.0,,
+459,JEFFERSON,40.4590936,-80.0145125,605 Rednap Street,0.0,1.0,0.0,0.0,0.0,,
+460,MAGEE,40.4243888,-79.93682489999999,745 Greenfield Avenue,0.0,1.0,0.0,0.0,0.0,,
+461,ORMSBY,40.4290339,-79.9743036,79 S. 22nd Street,0.0,1.0,0.0,0.0,0.0,,
+462,PHILLIPS,40.3915845,-79.99105519999999,201 Parkfield Street,0.0,1.0,0.0,0.0,0.0,,
+463,WARRINGTON,40.4212661,-80.0009554,329 Warrington Avenue,0.0,1.0,0.0,0.0,0.0,,
