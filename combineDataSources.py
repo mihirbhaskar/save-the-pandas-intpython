@@ -13,7 +13,7 @@ Author: Michaela Marincic (mmarinci)
 # Read in the three CSV files with data from the three sources (API, CSV, Web).
 def createMainFrame():
     import pandas as pd
-    apiData = pd.read_csv('MainFrame.csv', index_col=0)
+    apiData = pd.read_csv('APIData.csv', index_col=0)
     csvData = pd.read_csv('pittCity_REALfinal.csv')
     scrapedData = pd.read_csv('FoodSites_FINAL.csv', index_col=0)
 
