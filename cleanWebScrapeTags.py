@@ -29,78 +29,56 @@ Website
 import pandas as pd
 from getLocationWebsite import getLocationWebsite as getLW
 
+def cleanWebData(apiKey):
+
 # Import the data that was scraped from the food program website while it was still
 # allowing access.
-oldScrape = pd.read_csv('FoodSites_tableScrape.csv')
+    oldScrape = pd.read_csv('FoodSites_tableScrape.csv')
 
 # Change the tag names to match the format used in MainFrame.
-tagNames = ['Clothing','Food','Household','Housing','Training and other services']
-tagIndex = 0
-for col in oldScrape.columns[-5:]:
-    oldScrape.rename(columns = {col:tagNames[tagIndex]}, inplace=True)
-    tagIndex += 1
-    
-oldScrape['Food'] = 1
+    tagNames = ['Clothing','Food','Household','Housing','Training and other services']
+    tagIndex = 0
+    for col in oldScrape.columns[-5:]:
+        oldScrape.rename(columns = {col:tagNames[tagIndex]}, inplace=True)
+        tagIndex += 1
+        
+    oldScrape['Food'] = 1
 
-for tag in tagNames:
-    if tag != 'Food':
-        oldScrape[tag] = 0
-newScrape = oldScrape.copy()
-newScrape['Notes'] = ''
+    for tag in tagNames:
+        if tag != 'Food':
+            oldScrape[tag] = 0
+    newScrape = oldScrape.copy()
+    newScrape['Notes'] = ''
 
 
 # Now get place_ids for each location using the Google Maps Geocode API.
 # This will allow us to call the location's website using the Place Details API.
-import requests
-import json
-
-def getAddressCoords(input_address, api_key):
-    params = {'key' : api_key,
-              'address' : input_address}
-    url = 'https://maps.googleapis.com/maps/api/geocode/json?'
-    response = requests.get(url, params)
-    result = json.loads(response.text)
+    from getAddressCoords import getAddressCoords as getAC
     
-    # Check these error codes again - there may be more
-    if result['status'] not in ['INVALID_REQUEST', 'ZERO_RESULTS']:
-                
-        lat = result['results'][0]['geometry']['location']['lat']
-        long = result['results'][0]['geometry']['location']['lng']
-        place_id = result['results'][0]['place_id']
-
-        return [(lat, long), place_id]
-    
-    # Flagging if there was an error
-    else:
-        return "Invalid address"
-    
-for address in newScrape['Vicinity']:
-    newScrape['place_id'] = getAddressCoords(address,'API')[1]
+    for address in newScrape['Vicinity']:
+        newScrape['place_id'] = getAC(address, apiKey)[1]
 
 # Now that we have place_ids, we can query Place Details for any websites
 # associated with these locations.
-websites = {'place_id':[], 'Website':[]}
-for i in newScrape['place_id']:
-    result = getLW('API',
-                                       i,'website')
+    websites = {'place_id':[], 'Website':[]}
+    for i in newScrape['place_id']:
+        result = getLW(apiKey, i,'website')
     
-    if not result.empty:
-        websites['place_id'].append(i)
-        websites['Website'].append(result.at[0,'website'])
-    else:
-        websites['place_id'].append(i)
-        websites['Website'].append('')
+        if not result.empty:
+            websites['place_id'].append(i)
+            websites['Website'].append(result.at[0,'website'])
+        else:
+            websites['place_id'].append(i)
+            websites['Website'].append('')
         
-websitedf = pd.DataFrame.from_dict(websites)
-newScrape = newScrape.join(websitedf.set_index('place_id'), on='place_id')
-newScrape.drop(columns = 'place_id', inplace=True)
-newScrape.drop_duplicates(inplace=True)
+    websitedf = pd.DataFrame.from_dict(websites)
+    newScrape = newScrape.join(websitedf.set_index('place_id'), on='place_id')
+    newScrape.drop(columns = 'place_id', inplace=True)
+    newScrape.drop_duplicates(inplace=True)
 
 #Save the cleaned data to a csv.
-newScrape.to_csv('FoodSites_FINAL.csv')
-
-
-
+    newScrape.to_csv('FoodSites_FINAL.csv')
+    
 
 
 

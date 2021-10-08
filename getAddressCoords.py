@@ -15,10 +15,10 @@ import json
 import requests
 
 def getAddressCoords(input_address, api_key):
-    url = ('https://maps.googleapis.com/maps/api/geocode/json?address=' 
-           + input_address + '&key=' + api_key)
-    
-    response = requests.get(url)
+    params = {'key' : api_key,
+              'address' : input_address}
+    url = 'https://maps.googleapis.com/maps/api/geocode/json?'
+    response = requests.get(url, params)
     result = json.loads(response.text)
     
     # Check these error codes again - there may be more
@@ -26,8 +26,9 @@ def getAddressCoords(input_address, api_key):
                 
         lat = result['results'][0]['geometry']['location']['lat']
         long = result['results'][0]['geometry']['location']['lng']
+        place_id = result['results'][0]['place_id']
 
-        return (lat, long) 
+        return [(lat, long), place_id]
     
     # Flagging if there was an error
     else:
