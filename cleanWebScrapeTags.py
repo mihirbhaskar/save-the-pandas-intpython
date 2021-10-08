@@ -94,6 +94,7 @@ for i in newScrape['place_id']:
 websitedf = pd.DataFrame.from_dict(websites)
 newScrape = newScrape.join(websitedf.set_index('place_id'), on='place_id')
 newScrape.drop(columns = 'place_id', inplace=True)
+newScrape.drop_duplicates(inplace=True)
 
 #Save the cleaned data to a csv.
 newScrape.to_csv('FoodSites_FINAL.csv')
