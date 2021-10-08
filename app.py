@@ -374,7 +374,7 @@ def data_entry_div(n_clicks):
             # write into file
             with open('MainFrame.csv','r', encoding="utf8") as file:
                 count=len(file.readlines())-1
-            placeall=[count,name,place,lat,long,vin,flag1,flag2,flag3,flag4,flag5,notes,website]
+            placeall=[count,name,lat,long,vin,flag1,flag2,flag3,flag4,flag5,notes,website]
             with open('MainFrame.csv','a', encoding="utf8") as file:       
                 writer=csv.writer(file)
                 writer.writerow(placeall)
