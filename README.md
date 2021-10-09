@@ -1,7 +1,17 @@
-# save-the-pandas-intpython :panda_face:
+# Steel City Services App - Team Save the Pandas :panda_face:
 
-## App user notes
-- Once a row has been added to the CSV, the user just needs to click 'submit' again on the address for it to reflect
+## About this app
+This app allows users to search for nearby community services and upload their own information about such services.
+
+## How to run this app
+1. Clone this repository
+
+2. If you are working in 
+
+## User instructions for the app
+1. Enter your street address and click 'Submit'. A table should appear on the right panel of the screen. If the error message 'Invalid address' appears instead, this means your entered address did not find a location match using Google's API. Try entering it in a more standardised format, or just enter the name of the broad area you stay in.
+2. Editing the maximum travel distance in miles (i.e. 'search radius' from your address) and selecting/de-selecting the relevant categories will update the table dynamically (live). If you want to try with a new address, you will need to type in the address and click 'Submit' for it to register and update the table accordingly.
+3. If you would like to add data, click the 'Submit Your Own Data' button. This will open a pop-up window titled 'Upload UI', with relevant fields to fill. THe name, vicinity, and selecting at least one category option are mandatory. 
 
 ## Resources used
 - [Dash Clinical Analytics App](https://github.com/plotly/dash-sample-apps/blob/main/apps/dash-clinical-analytics/app.py) used as a template for styling; CSS style sheets copied, and similar UI design used
