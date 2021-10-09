@@ -14,7 +14,12 @@ This app allows users to search for nearby community services and upload their o
 - tkinter.messagebox
 - csv
 - time. A link to the library is [here](https://docs.python.org/3/library/time.html))
-- Standard libraries used in class: pandas, numpy, json, requests, BeautifulSoup
+- BeautifulSoup
+- Other standard libraries: pandas, numpy, json, requests
+
+**Step 3:** Run the script `app.py`. Before running it, make sure your working directory is at the root of the git repository you cloned. This way, there will be no path issues.
+
+**Step 4:** If the app runs successfully, the Console should display *'Dash is running (some http://... address)'*. Copy and paste that address in your browser and you should see tha app running! 
  
 
 ## User instructions for the app
