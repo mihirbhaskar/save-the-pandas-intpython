@@ -23,9 +23,9 @@ This app allows users to search for nearby community services and upload their o
  
 
 ## User instructions for the app
-1. Enter your street address and click 'Submit'. A table should appear on the right panel of the screen. If the error message 'Invalid address' appears instead, this means your entered address did not find a location match using Google's API. Try entering it in a more standardised format, or just enter the name of the broad area you stay in.
+1. Enter your street address and click 'Submit'. A table should appear on the right panel of the screen. If the error message 'Invalid address' appears instead, this means your entered address did not find a location match using Google's API. Try entering it in a more standardised format, or just enter the name of the area you stay in.
 
-2. Editing the maximum travel distance in miles (i.e. 'search radius' from your address) and selecting/de-selecting the relevant categories will update the table dynamically (live). If you want to try with a new address, you will need to type in the address and click 'Submit' for it to register and update the table accordingly.
+2. Editing the maximum travel distance in miles and selecting/de-selecting the relevant categories will update the table dynamically (live). If you want to try with a new address, you will need to type in the address and click 'Submit' for it to register and update the table accordingly. Note that the travel distance in miles is calculated as the geodesic distance; that is, the length of the shortest path between your address' lat-long and the service's lat-long.
 
 3. If you would like to add data, click the 'Submit Your Own Data' button. This will open a pop-up window titled 'Upload UI', with relevant fields to fill. The `name`, `vicinity` (i.e. street address ideally, or area name at the minimum), and selecting at least one category option are mandatory. Enter the data, and click `Upload`. If the address entered in `vicinity` cannot match to a location using Google's API, a warning message will pop-up asking you to enter a valid address. If you have entered a proper address and filled out the fields correctly, a prompt will ask if you want to upload the data. Clicking `OK' will add this data to the main database, and show a window saying 'Uploaded Successfully'. You can now close the data entry box.
 
@@ -38,7 +38,7 @@ This app allows users to search for nearby community services and upload their o
 
 
 
-## Contributor instructions - setting up GitHub and using the repository
+## Contributor team instructions - setting up GitHub and using the repository
 
 ### Step 1: Install Git
 
