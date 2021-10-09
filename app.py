@@ -266,7 +266,8 @@ def search_output_div(n_clicks, user_address, max_travel_dist, asset_type):
                                                     'minWidth': '80px',
                                                     'width': '180px',
                                                     'maxWidth': '180px',
-                                                    'whiteSpace': 'normal'})
+                                                    'whiteSpace': 'normal'},
+                                        style_header={'fontWeight':'bold'})
             
         # If address failed, return the string error message
         else:
