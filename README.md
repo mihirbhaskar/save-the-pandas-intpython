@@ -4,19 +4,32 @@
 This app allows users to search for nearby community services and upload their own information about such services.
 
 ## How to run this app
-1. Clone this repository
+*Step 1:* Clone this repository
 
-2. If you are working in 
+*Step 2:* Below is a list of packages used in the app. If you do not have any installed already, please install them:
+- Dash (dash, dash_core_components, dash_html_components, dash.dependencies). [This link](https://stackoverflow.com/questions/49613878/python-install-dash-with-conda) shows you how to install these components using Conda install.
+- Dash Table, installed in conda by typing `conda install -c conda-forge dash-table`
+- geopy
+- tkinter
+- tkinter.messagebox
+- csv
+- time. A link to the library is [here](https://docs.python.org/3/library/time.html))
+- Standard libraries used in class: pandas, numpy, json, requests, BeautifulSoup
+ 
 
 ## User instructions for the app
 1. Enter your street address and click 'Submit'. A table should appear on the right panel of the screen. If the error message 'Invalid address' appears instead, this means your entered address did not find a location match using Google's API. Try entering it in a more standardised format, or just enter the name of the broad area you stay in.
+
 2. Editing the maximum travel distance in miles (i.e. 'search radius' from your address) and selecting/de-selecting the relevant categories will update the table dynamically (live). If you want to try with a new address, you will need to type in the address and click 'Submit' for it to register and update the table accordingly.
-3. If you would like to add data, click the 'Submit Your Own Data' button. This will open a pop-up window titled 'Upload UI', with relevant fields to fill. THe name, vicinity, and selecting at least one category option are mandatory. 
+
+3. If you would like to add data, click the 'Submit Your Own Data' button. This will open a pop-up window titled 'Upload UI', with relevant fields to fill. The `name`, `vicinity` (i.e. street address ideally, or area name at the minimum), and selecting at least one category option are mandatory. Enter the data, and click `Upload`. If the address entered in `vicinity` cannot match to a location using Google's API, a warning message will pop-up asking you to enter a valid address. If you have entered a proper address and filled out the fields correctly, a prompt will ask if you want to upload the data. Clicking `OK' will add this data to the main database, and show a window saying 'Uploaded Successfully'. You can now close the data entry box.
+
+4. Any data that was added using the Upload UI should automatically update and reflect in the live table displayed.
 
 ## Resources used
-- [Dash Clinical Analytics App](https://github.com/plotly/dash-sample-apps/blob/main/apps/dash-clinical-analytics/app.py) used as a template for styling; CSS style sheets copied, and similar UI design used
+- [Dash Clinical Analytics App](https://github.com/plotly/dash-sample-apps/blob/main/apps/dash-clinical-analytics/app.py) used as a template for styling; CSS style sheets cloned directly, and a similar design template used
 
-## Setting up the repository
+## Contributor instructions - setting up GitHub and using the repository
 
 ### Step 1: Install Git
 
