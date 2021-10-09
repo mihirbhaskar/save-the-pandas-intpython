@@ -13,7 +13,7 @@ This app allows users to search for nearby community services and upload their o
 - tkinter
 - tkinter.messagebox
 - csv
-- time. A link to the library is [here](https://docs.python.org/3/library/time.html))
+- time (a link to the library is [here](https://docs.python.org/3/library/time.html))
 - BeautifulSoup
 - Other standard libraries: pandas, numpy, json, requests
 
