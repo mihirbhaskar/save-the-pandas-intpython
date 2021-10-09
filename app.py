@@ -45,7 +45,7 @@ import json
 import requests
 
 app = dash.Dash(__name__)
-app.title = 'Community Support Search'
+app.title = 'Steel City Services'
 
 # =============================================================================
 # Reading data
@@ -58,7 +58,7 @@ df = pd.read_csv(path, index_col=0)
 lastmt = os.stat(path).st_mtime
 
 # Pulling column names from df to serve as options to populate the dropdown
-tags = ['Clothing', 'Food', 'Household Goods', 'Housing', 'Training and other services']
+tags = ['CLOTHING', 'FOOD', 'HOUSEHOLD GOODS', 'HOUSING', 'TRAINING AND OTHER SERVICES']
 
 # =============================================================================
 # Defining functions to create the appropriate HTML Divs (i.e. sections of the UI)
@@ -73,7 +73,7 @@ def description_card():
     return html.Div(
         id="description-card",
         children=[
-            html.H5("Community Support Search"),
+            html.H5("Steel City Services"),
             html.H3("Find and contribute support options near you"),
             html.Div(
                 id="intro",
@@ -195,14 +195,14 @@ def search_output_div(n_clicks, user_address, max_travel_dist, asset_type):
         user_coords = getAddressCoords(input_address = user_address, api_key = google_apikey)
         
         # Check if address was translated properly - if yes, it should return a tuple
-        if type(user_coords) == tuple:
+        if type(user_coords) == list:
     
             # =============================================================================
             # Filtering the data according to parameters            
             # =============================================================================
             
             # Filter the data frame with observations that fall within max distance limit, using a user-defined program
-            fdata = filterNearby(point = user_coords, data = df, max_dist = max_travel_dist)
+            fdata = filterNearby(point = user_coords[0], data = df, max_dist = max_travel_dist)
             
             # Now filter this data with only the categories the user selected
             
@@ -222,14 +222,14 @@ def search_output_div(n_clicks, user_address, max_travel_dist, asset_type):
             # =============================================================================
             
             # Combine the information in dummy columns to one column with comma-separated services provided
-            fdata['support provided'] = ''
+            fdata['SUPPORT PROVIDED'] = ''
     
             for i in tags: # Note: tags is defined at the top of the script, as the list of service categories
-                fdata.loc[fdata[i] == 1, 'support provided'] += i + ',' # Concat on the service name (column name) if it's value is 1
-            fdata['support provided'] = fdata['support provided'].str[:-1] # Strip the last comma 
+                fdata.loc[fdata[i] == 1, 'SUPPORT PROVIDED'] += i + ',' # Concat on the service name (column name) if it's value is 1
+            fdata['SUPPORT PROVIDED'] = fdata['SUPPORT PROVIDED'].str[:-1] # Strip the last comma 
             
             # Round the distance in miles column to 2 decimal places
-            fdata['distance in miles'] = fdata['distance in miles'].round(2)
+            fdata['DISTANCE IN MILES'] = fdata['DISTANCE IN MILES'].round(2)
             
 
             # To-do: Make the vicinity a 'link' display that when users click gives them directions
@@ -237,7 +237,7 @@ def search_output_div(n_clicks, user_address, max_travel_dist, asset_type):
             # How to do it in code: https://github.com/plotly/dash-table/issues/222#issuecomment-585179610
             
             # Select the appropriate columns to display
-            fdata = fdata[['name', 'support provided', 'vicinity', 'distance in miles', 'website', 'Notes']]
+            fdata = fdata[['NAME', 'SUPPORT PROVIDED', 'VICINITY', 'DISTANCE IN MILES', 'WEBSITE', 'NOTES']]
                                     
             # Convert the dataframe into Dash's DataTable for display in the app
             tmpdta = fdata.to_dict('rows')
@@ -249,7 +249,7 @@ def search_output_div(n_clicks, user_address, max_travel_dist, asset_type):
                                         #fill_width=False,
                                         # Need to play around with this code
                                          style_cell_conditional=[
-                                             {'if': {'column_id': 'distance in miles'},
+                                             {'if': {'column_id': 'DISTANCE IN MILES'},
                                               'width':'80px'}],
                                         #     {'if': {'column_id': 'support provided'},
                                         #      'width': '20%'},
@@ -367,8 +367,8 @@ def data_entry_div(n_clicks):
                 elif cat[i]=='Training and other services':
                     flag5=1
             #flag1,flag2,flag3,flag4,flag5=fill(flag1,flag2,flag3,flag4,flag5)
-            lat= list(getAddressCoords(e6.get(), google_apikey))[0]
-            long=list(getAddressCoords(e6.get(), google_apikey))[1]
+            lat= list(getAddressCoords(e6.get(), google_apikey)[0])[0]
+            long=list(getAddressCoords(e6.get(), google_apikey)[0])[1]
             vin=e6.get()
         
             # write into file
