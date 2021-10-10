@@ -7,8 +7,7 @@ This app allows users to search for nearby community services and upload their o
 **Step 1:** Clone this repository
 
 **Step 2:** Below is a list of packages used in the app. If you do not have any installed already, please install them:
-- Dash (dash, dash_core_components, dash_html_components, dash.dependencies). [This link](https://stackoverflow.com/questions/49613878/python-install-dash-with-conda) shows you how to install these components using Conda install.
-- Dash Table, installed in conda by typing `conda install -c conda-forge dash-table`
+- Dash, installed in conda by typing `conda install -c conda-forge dash`
 - geopy
 - tkinter
 - tkinter.messagebox
