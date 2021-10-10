@@ -1,20 +1,8 @@
 """
 File: app.py
 Description: Main file for the front-end of the Dash application
-Author: Mihir Bhaskar
-
-Usage instructions:
-    1. Install all the relevant libraries if this is your first time running the app. 
-       Do this by opening 'Anaconda Prompt', and installing the following:
-        
-        (a) Install Dash and its components by typing the commands shown here https://stackoverflow.com/questions/49613878/python-install-dash-with-conda
-        (b) Install dash table by typing 'conda install -c conda-forge dash-table'
-        (c) Install geopy by typing 'conda install -c conda-forge geopy'
-    
-    2. Enter your Google API key at the start (line 23 of this script) for the geo-coding to work
-    3. Run this script, and open the http://(...) link that is displayed in the console with 'Dash is running on ...'
-       in your browser
-       
+Output: Running this creates the application
+Author: Mihir Bhaskar, Anna (Qi) Wang
 """
 
 # =============================================================================
