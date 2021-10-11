@@ -25,6 +25,8 @@ This app allows users to search for nearby community services and upload their o
  
 
 ## User instructions for the app
+A video demonstrating how to use the app is [**here**](https://www.youtube.com/watch?v=dIFTxsJhcF8)
+
 1. Enter your street address and click 'Submit'. A table should appear on the right panel of the screen. If the error message 'Invalid address' appears instead, this means your entered address did not find a location match using Google's API. Try entering it in a more standardised format, or just enter the name of the area you stay in.
 
 2. Editing the maximum travel distance in miles and selecting/de-selecting the relevant categories will update the table dynamically (live). If you want to try with a new address, you will need to type in the address and click 'Submit' for it to register and update the table accordingly. Note that the travel distance in miles is calculated as the geodesic distance; that is, the length of the shortest path between your address' lat-long and the service's lat-long.
