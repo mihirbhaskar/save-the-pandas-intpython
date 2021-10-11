@@ -38,4 +38,5 @@ def createMainFrame():
     MainFrame_FINAL = apiData.append([csvData, scrapedData], ignore_index=True)
     MainFrame_FINAL.to_csv('MainFrame.csv')
 
-createMainFrame()
+if __name__ == '__main__':
+    createMainFrame()

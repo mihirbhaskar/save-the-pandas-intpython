@@ -23,7 +23,7 @@
 import requests
 from bs4 import BeautifulSoup 
 import pandas as pd 
-import getAddressCoords # need this function to add lat, longs to site addresses
+import getAddressCoords as getAdd # need this function to add lat, longs to site addresses
 
 # write a function to scrape the page 
 def findFood(url): 
@@ -40,7 +40,7 @@ def findFood(url):
     return locs 
 
 # write a function to clean up the text and nget rid of funky html formatting: 
-def scrapeFood(): 
+def scrapeFood(apiKey): 
     # call the function on the after-school feeding site from CitiParks: 
     sites = findFood("https://pittsburghpa.gov/citiparks/after-school-feeding-program")
 
@@ -70,7 +70,7 @@ def scrapeFood():
     """ 
     coords = []
     for each in foodsites["Vicinity"]: 
-        coord = getAddressCoords(each, "Enter API Key")  
+        coord = getAdd.getAddressCoords(each, apiKey)  
         coords.append(coord)
         
     # save each item of each tuple into lat and long lists
@@ -104,3 +104,10 @@ def scrapeFood():
     # output this to CSV to collate w/ CSVs containing other site data: 
     foodsites.to_csv("FoodSites_tableScrape.csv", index=False)
 
+if __name__ == '__main__':
+    apiKey = input('Enter your Google Places API Key: ')
+    try:
+        scrapeFood(apiKey)
+    except:
+        print('Try again! Error.')
+        apikey = input('Enter your Google Places API Key: ')

@@ -255,3 +255,6 @@ def getPittDwnld():
     pittCity_final.drop("address_number", axis=1, inplace=True)
     
     pittCity_final.to_csv("pittCity_REALfinal.csv", index=False) 
+
+if __name__ == '__main__':
+    getPittDwnld()

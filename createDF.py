@@ -32,7 +32,7 @@ def createGoogleDF(apiKey):
     catIndex = 1
     for keyword in keywords[1:]:
     
-        results = getGM.getMapData('AIzaSyC5S1GFZDB7rwVTQJ5w327Ev5wLilfdMgo',
+        results = getGM.getMapData(apiKey,
                                '40.440600,-79.995900', keyword, '50000')
         data = results[0]
         data['category'] = categories[catIndex]
@@ -43,7 +43,7 @@ def createGoogleDF(apiKey):
         # initial API call. So we check to see whether there is a nextToken for each
         if nextToken is not None:
             time.sleep(2) # Need to introduce this so that API call ready for token
-            results2 = getGM.getMapData('AIzaSyC5S1GFZDB7rwVTQJ5w327Ev5wLilfdMgo',
+            results2 = getGM.getMapData(apiKey,
                                '40.440600,-79.995900', keyword, '50000', 
                                nextToken)
             data2 = results2[0]
@@ -52,13 +52,16 @@ def createGoogleDF(apiKey):
         
             if nextToken is not None:
                 time.sleep(2)
-                results3 = getGM.getMapData('AIzaSyC5S1GFZDB7rwVTQJ5w327Ev5wLilfdMgo',
+                results3 = getGM.getMapData(apiKey,
                                '40.440600,-79.995900', keyword, '50000', 
                                nextToken)
                 data3 = results3[0]
                 data3['category'] = categories[catIndex]
                 nextToken = results3[1]
-       
+                
+       # This portion of the code appends data to data2 and data3, if both 
+       # exist, to data2 if data3 does not exist, and to nothing if neither
+       # exist. The variable data should always exist.
         try:
             MainFrame = MainFrame.append([data, data2, data3], ignore_index = True)
         except:
@@ -92,7 +95,7 @@ def createGoogleDF(apiKey):
     # 'URL' column will be added using Google Maps API "Place Details"
     websites = {'place_id':[], 'website':[]}
     for i in MainFrame['place_id']:
-        result = getLW.getLocationWebsite('AIzaSyC5S1GFZDB7rwVTQJ5w327Ev5wLilfdMgo',
+        result = getLW.getLocationWebsite(apiKey,
                                        i,'website')
     
         if not result.empty:
@@ -105,3 +108,12 @@ def createGoogleDF(apiKey):
 
     # Write to CSV
     MainFrame.to_csv('APIData.csv')
+
+if __name__ == '__main__':
+    apikey = input('Enter your Google Places API Key: ')
+    try:
+        createGoogleDF(apikey)
+    except:
+        print('Try again! Error.')
+        apikey = input('Enter your Google Places API Key: ')
+        

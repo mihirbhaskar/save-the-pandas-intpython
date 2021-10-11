@@ -78,7 +78,14 @@ def cleanWebData(apiKey):
 
 #Save the cleaned data to a csv.
     newScrape.to_csv('FoodSites_FINAL.csv')
-    
+
+if __name__ == '__main__':
+    apikey = input('Enter your Google Places/Geocode API Key: ')
+    try:
+        cleanWebData(apikey)
+    except:
+        print('Try again! Error.')
+        apikey = input('Enter your Google Places/Geocode API Key: ')
 
 
 
