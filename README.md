@@ -23,10 +23,6 @@ This app allows users to search for nearby community services and upload their o
 
 **Step 4:** If the app runs successfully, the Console should display *'Dash is running on http://{...}'*. Copy and paste the full http address in your browser and you should see the app running! 
 
----
----
- 
-
 ## User instructions for the app
 A video demonstrating how to use the app is [**here**](https://www.youtube.com/watch?v=dIFTxsJhcF8)
 
@@ -41,9 +37,9 @@ A video demonstrating how to use the app is [**here**](https://www.youtube.com/w
 ## Resources used
 - [Dash Clinical Analytics App](https://github.com/plotly/dash-sample-apps/blob/main/apps/dash-clinical-analytics/app.py) used as a template for styling; CSS style sheets cloned directly, and a similar design template used
 
-
-
-
+---
+---
+ 
 
 ## Contributor team instructions - setting up GitHub and using the repository
 
