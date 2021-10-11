@@ -1,4 +1,7 @@
-# Steel City Services App - Team Save the Pandas :panda_face:
+
+<a href="url"><img src="https://github.com/mihirbhaskar/save-the-pandas-intpython/blob/main/assets/savethepandas_logo.png" align="left" height="80" width="80" ></a>
+
+# Steel City Services App - Team Save the Pandas
 
 ## About this app
 This app allows users to search for nearby community services and upload their own information about such services.
@@ -7,13 +10,13 @@ This app allows users to search for nearby community services and upload their o
 **Step 1:** Clone this repository
 
 **Step 2:** Below is a list of packages used in the app. If you do not have any installed already, please install them:
-- Dash, installed in conda by typing `conda install -c conda-forge dash`
-- geopy
-- tkinter
-- tkinter.messagebox
-- csv
+- Dash, installed in conda by typing `conda install -c conda-forge dash` into Anaconda Prompt
+- geopy, installed in conda by typing `conda install -c conda-forge geopy` into Anaconda Prompt
+- tkinter (this should be default installed with conda)
+- tkinter.messagebox (this should be default installed with conda)
+- csv (this should be default installed with conda)
 - time (a link to the library is [here](https://docs.python.org/3/library/time.html))
-- BeautifulSoup
+- BeautifulSoup (this should be default installed with conda)
 - Other standard libraries: pandas, numpy, json, requests
 
 **Step 3:** Run the script `app.py`. Before running it, make sure your working directory is at the root of the git repository you cloned. This way, there will be no path issues.
@@ -26,7 +29,7 @@ This app allows users to search for nearby community services and upload their o
 
 2. Editing the maximum travel distance in miles and selecting/de-selecting the relevant categories will update the table dynamically (live). If you want to try with a new address, you will need to type in the address and click 'Submit' for it to register and update the table accordingly. Note that the travel distance in miles is calculated as the geodesic distance; that is, the length of the shortest path between your address' lat-long and the service's lat-long.
 
-3. If you would like to add data, click the 'Submit Your Own Data' button. This will open a pop-up window titled 'Upload UI', with relevant fields to fill. The `name`, `vicinity` (i.e. street address ideally, or area name at the minimum), and selecting at least one category option are mandatory. Enter the data, and click `Upload`. If the address entered in `vicinity` cannot match to a location using Google's API, a warning message will pop-up asking you to enter a valid address. If you have entered a proper address and filled out the fields correctly, a prompt will ask if you want to upload the data. Clicking `OK' will add this data to the main database, and show a window saying 'Uploaded Successfully'. You can now close the data entry box.
+3. If you would like to add data, click the 'Submit Your Own Data' button. This will open a pop-up window titled 'Upload UI', with relevant fields to fill. The `name` and `vicinity` (i.e. street address ideally, or area name at the minimum) options are mandatory. Enter the data, and click `Upload`. If the address entered in `vicinity` cannot match to a location using Google's API, a warning message will pop-up asking you to enter a valid address. If you have entered a proper address and filled out the fields correctly, a prompt will ask if you want to upload the data. Clicking `OK' will add this data to the main database, and show a window saying 'Uploaded Successfully'. You can now close the data entry box.
 
 4. Any data that was added using the Upload UI should automatically update and reflect in the live table displayed.
 
