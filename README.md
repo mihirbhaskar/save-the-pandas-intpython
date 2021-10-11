@@ -10,14 +10,14 @@ This app allows users to search for nearby community services and upload their o
 **Step 1:** Clone this repository
 
 **Step 2:** Below is a list of packages used in the app. If you do not have any installed already, please install them:
-- Dash, installed in conda by typing `conda install -c conda-forge dash` into Anaconda Prompt
-- geopy, installed in conda by typing `conda install -c conda-forge geopy` into Anaconda Prompt
-- tkinter (this should be default installed with conda)
-- tkinter.messagebox (this should be default installed with conda)
-- csv (this should be default installed with conda)
-- time (a link to the library is [here](https://docs.python.org/3/library/time.html))
-- BeautifulSoup (this should be default installed with conda)
-- Other standard libraries: pandas, numpy, json, requests
+- **Dash**, installed in conda by typing `conda install -c conda-forge dash` into Anaconda Prompt
+- **geopy**, installed in conda by typing `conda install -c conda-forge geopy` into Anaconda Prompt
+- **tkinter** (this should be default installed with conda)
+- **tkinter.messagebox** (this should be default installed with conda)
+- **csv** (this should be default installed with conda)
+- **time** (a link to the library is [here](https://docs.python.org/3/library/time.html))
+- **BeautifulSoup** (this should be default installed with conda)
+- Other standard libraries: **pandas, numpy, json, requests**
 
 **Step 3:** Run the script `app.py`. Before running it, make sure your working directory is at the root of the git repository you cloned. This way, there will be no path issues.
 
