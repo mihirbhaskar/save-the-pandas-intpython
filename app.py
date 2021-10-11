@@ -379,5 +379,5 @@ def data_entry_div(n_clicks):
     
     
 if __name__ == '__main__':
-    app.run_server(debug=True, dev_tools_hot_reload=True)
+    app.run_server(debug=True, dev_tools_hot_reload=False)
 
