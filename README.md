@@ -21,7 +21,10 @@ This app allows users to search for nearby community services and upload their o
 
 **Step 3:** Run the script `app.py`. Before running it, make sure your working directory is at the root of the git repository you cloned. This way, there will be no path issues.
 
-**Step 4:** If the app runs successfully, the Console should display *'Dash is running (some http://... address)'*. Copy and paste that address in your browser and you should see tha app running! 
+**Step 4:** If the app runs successfully, the Console should display *'Dash is running on http://{...}'*. Copy and paste the full http address in your browser and you should see the app running! 
+
+---
+---
  
 
 ## User instructions for the app
